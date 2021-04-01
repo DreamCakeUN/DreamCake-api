@@ -37,11 +37,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        
+    'django.contrib.sites',
+
+    # EXTERNAL PACKAGES
+    # rest framework        
     'rest_framework',
     'rest_framework.authtoken',
 
-    'users'
+    # apps
+    'users',
+    'statistics_api',
+
+    # sslserver
+    'sslserver',
+
+    # allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.instagram',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google'
+
+
 ]
 
 MIDDLEWARE = [
@@ -67,13 +85,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'DreamCakeApi.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -129,3 +147,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# ALLAUTH CONFIGURATION
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 5
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = True
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '679571797769-tbei8a8kc1mls3g1vuugs5cn79vciabo.apps.googleusercontent.com',
+            'secret': '1toAFT4x6Ilw9Qn4fyKR9df4',
+            'key': ''
+        }
+    },
+    'facebook':{
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': False
+    }
+
+}

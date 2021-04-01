@@ -3,8 +3,10 @@
 ## API
 
  - Django
-
  - Djangorestframework
+ - allauth
+ - django-sslserver 
+   - `python manage.py runsslserver`
 
 ## DB
 
