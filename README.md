@@ -20,7 +20,14 @@
 
  - ### Credenciales
 
-	-	|USER|PSWD|
-		|--------|---------|
-		|postgres| raspberry|
+	-	|USER      |PSWD       |
+		|----------|-----------|
+		| postgres | raspberry |
 
+## CUSTOM URLS
+
+| URL                  | VIEW                            |
+|----------------------|---------------------------------|
+| /stats/interactions/ | statistics_api.views.inte_count |
+| /stats/posts/        | statistics_api.views.post_count |
+| /stats/users/        | statistics_api.views.user_count |

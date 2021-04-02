@@ -57,9 +57,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
 
-
+    # django extensions
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
