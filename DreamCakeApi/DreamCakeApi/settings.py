@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
-    'users'
+    'users',
+    'social'
 ]
 
 MIDDLEWARE = [
@@ -84,10 +85,8 @@ DATABASES = {
         'NAME': 'DreamCake',
         'USER': 'postgres',
         'PASSWORD': 'raspberry',
-        # 'HOST': 'http://z4yross.hopto.org',
-        # 'PORT': '49152'
-        'HOST': '192.168.1.6',
-        'PORT': '5432'
+        'HOST': 'z4yross.hopto.org',
+        'PORT': '49152'    
     }
 }
 
