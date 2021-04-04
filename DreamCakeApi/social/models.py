@@ -13,5 +13,7 @@ class Post(models.Model):
 
     def publish(self):
         self.save()
-    
+    def __str__(self):
+        return 'usuario {} </br> foto {} </br> likes {} </br> status {} </br> published_date {} </br></br></br> '.format(self.usuario, self.foto, self.likes, self.status, self.published_date)
+
     
