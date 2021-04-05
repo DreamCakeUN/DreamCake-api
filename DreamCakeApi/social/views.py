@@ -7,4 +7,4 @@ from django.http import HttpResponse
 
 def list_posts(request):
     posts = Post.objects.all()
-    return HttpResponse(posts)
+    return render(request, 'posts/posts.html',{'posts': posts})
