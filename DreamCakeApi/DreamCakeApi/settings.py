@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,7 +60,9 @@ ROOT_URLCONF = 'DreamCakeApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,10 +87,10 @@ DATABASES = {
         'NAME': 'DreamCake',
         'USER': 'postgres',
         'PASSWORD': 'raspberry',
-        # 'HOST': 'http://z4yross.hopto.org',
-        # 'PORT': '49152'
-        'HOST': '192.168.1.6',
-        'PORT': '5432'
+        'HOST': 'z4yross.hopto.org',
+        'PORT': '49152'
+        #'HOST': '192.168.1.6',
+        #'PORT': '5432'
     }
 }
 
@@ -129,3 +132,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build/static')
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build/static/media')
