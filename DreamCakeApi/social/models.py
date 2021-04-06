@@ -11,9 +11,9 @@ class Post(models.Model):
     status = models.BooleanField(blank=True)
     published_date = models.DateTimeField(auto_now_add=True)
 
-    def publish(self):
-        self.save()
-    def __str__(self):
-        return 'usuario {} </br> foto {} </br> likes {} </br> status {} </br> published_date {} </br></br></br> '.format(self.usuario, self.foto, self.likes, self.status, self.published_date)
+    #def publish(self):
+    #    self.save()
+    #def __str__(self):
+    #    return 'usuario {} </br> foto {} </br> likes {} </br> status {} </br> published_date {} </br></br></br> '.format(self.usuario, self.foto, self.likes, self.status, self.published_date)
 
     
