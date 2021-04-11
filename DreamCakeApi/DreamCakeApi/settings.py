@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,9 @@ INSTALLED_APPS = [
     # rest framework        
     'rest_framework',
     'rest_framework.authtoken',
+
+    #fullurls
+    'fullurl',
 
     # apps
     'users',
@@ -81,7 +85,7 @@ ROOT_URLCONF = 'DreamCakeApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +110,7 @@ DATABASES = {
         'NAME': 'DreamCake',
         'USER': 'postgres',
         'PASSWORD': 'raspberry',
-        # 'HOST': 'http://z4yross.hopto.org',
+        # 'HOST': 'z4yross.hopto.org',
         # 'PORT': '49152'
         'HOST': '192.168.1.6',
         'PORT': '5432'

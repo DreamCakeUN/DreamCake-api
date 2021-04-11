@@ -4,8 +4,10 @@
 
  - Django
  - Djangorestframework
+ - django-extensions 
  - allauth
  - django-sslserver 
+ - dajngo-cors-headers
    - `python manage.py runsslserver`
 
 ## DB
