@@ -60,7 +60,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     # django extensions
-    'django_extensions'
+    'django_extensions',
+
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'DreamCakeApi.urls'
@@ -149,6 +152,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# CORS
+
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+] 
+ALLOWED_HOSTS=['*']
+# If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+# CORS_ORIGIN_REGEX_WHITELIST = [
+#     'http://localhost:3000',
+# ]
+
+
 # ALLAUTH CONFIGURATION
 
 AUTHENTICATION_BACKENDS = [
@@ -160,8 +177,12 @@ SITE_ID = 5
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = True
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 
