@@ -55,11 +55,14 @@ INSTALLED_APPS = [
     # sslserver
     'sslserver',
 
+    # rest_auth
+    'rest_auth',
+    'rest_auth.registration',
+
     # allauth
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.instagram',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
 
@@ -159,7 +162,7 @@ STATIC_URL = '/static/'
 # CORS
 
 # CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ] 
@@ -179,16 +182,15 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 5
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = False
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='http'
 
-ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
+ACCOUNT_ADAPTER = 'users.adapter.AccountAPIAdapter'
+ACCOUNT_FORMS = {'login': 'users.forms.CLoginForm'}
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {

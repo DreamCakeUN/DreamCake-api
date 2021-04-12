@@ -7,7 +7,9 @@
  - django-extensions 
  - allauth
  - django-sslserver 
- - dajngo-cors-headers
+ - djngo-cors-headers
+ - django-fullurl
+ - django-rest-auth
    - `python manage.py runsslserver`
 
 ## DB
