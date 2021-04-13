@@ -193,4 +193,12 @@ FakesAssemblies/
 *.plg
 
 # Visual Studio 6 workspace options file
-*.opt
+*.opt´
+
+users/__pycache__/
+users/migrations/
+DreamCakeApi/__pycache__/
+statistics_api/__pycache__/
+statistics_api/migrations/
+social/__pycache__/
+social/migrations/

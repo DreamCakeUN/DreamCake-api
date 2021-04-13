@@ -38,11 +38,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        
+    'django.contrib.sites',
+
+    # EXTERNAL PACKAGES
+    # rest framework        
     'rest_framework',
     'rest_framework.authtoken',
 
-    'users'
+    #fullurls
+    'fullurl',
+
+    # apps
+    'users',
+    'statistics_api',
+
+    # sslserver
+    'sslserver',
+
+    # rest_auth
+    'rest_auth',
+    'rest_auth.registration',
+
+    # allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
+    # django extensions
+    'django_extensions',
+
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'DreamCakeApi.urls'
@@ -62,7 +90,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build'),
-        ],
+            os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts'),
+        ],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,13 +99,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request'
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'DreamCakeApi.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -139,4 +168,57 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build/static')
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build/static/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# CORS
+
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+] 
+ALLOWED_HOSTS=['*']
+# If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+# CORS_ORIGIN_REGEX_WHITELIST = [
+#     'http://localhost:3000',
+# ]
+
+
+# ALLAUTH CONFIGURATION
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 5
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = False
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='http'
+
+ACCOUNT_ADAPTER = 'users.adapter.AccountAPIAdapter'
+ACCOUNT_FORMS = {'login': 'users.forms.CLoginForm'}
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '679571797769-tbei8a8kc1mls3g1vuugs5cn79vciabo.apps.googleusercontent.com',
+            'secret': '1toAFT4x6Ilw9Qn4fyKR9df4',
+            'key': ''
+        }
+    },
+    'facebook':{
+        'SCOPE': ['email'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': False
+    }
+
+}
