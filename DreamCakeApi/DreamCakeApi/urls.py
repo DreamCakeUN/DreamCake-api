@@ -18,9 +18,9 @@ from django.urls import path
 #from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from users.views import home
+from users.views import photoViewList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home)
+    path('photos/', photoViewList.as_view(), name='photo_list')
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
