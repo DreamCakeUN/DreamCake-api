@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import Banner
+from social.models import Post
 # Register your models here.
-admin.site.register(Banner)
+
+admin.site.register(Post)
