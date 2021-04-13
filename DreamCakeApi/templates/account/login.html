@@ -36,18 +36,5 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p> {% endco
 </form>
 
 
-{% get_providers as socialaccount_providers %}
-
-<div class="socialaccount_ballot">
-
-  <ul class="socialaccount_providers">
-    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-  </ul>
-
-  {% comment %} <div class="login-or">{% trans 'or' %}</div> {% endcomment %}
-
-</div>
-
-{% include "socialaccount/snippets/login_extra.html" %}
 
 {% endblock %}

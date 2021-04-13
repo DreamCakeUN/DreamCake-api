@@ -39,11 +39,23 @@ OAUTH_CALLBACK = 'auth/social/{provider}/callback'
 #     ),
 # ]
 
+facebook_urlpatterns = [
+    path('auth-server/', views.FacebookLogin.as_view(), name='fb_login'),
+]
+
+google_urlpatterns = [
+    path('auth-server/', views.GoogleLogin.as_view(), name='gg_login'),
+]
+
 
 api_urlpatterns = [
     path('auth/', include('rest_auth.urls')),
     path('auth/registration/', include('rest_auth.registration.urls')),
     # path('auth/social/github/', include(github_urlpatterns)),
+
+    path('auth/social/facebook/', include(facebook_urlpatterns)),
+    path('auth/social/google/', include(google_urlpatterns)),
+
     path(
         'auth/user/accounts/',
         SocialAccountListView.as_view(),
