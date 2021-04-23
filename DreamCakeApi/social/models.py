@@ -6,14 +6,10 @@ from django.utils import timezone
 
 class Post(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    foto = models.CharField(max_length=255, blank=True)
+    foto = models.ImageField(upload_to='postImages')
     likes = models.IntegerField(blank=True)
     status = models.BooleanField(blank=True)
     published_date = models.DateTimeField(auto_now_add=True)
 
     #def publish(self):
-    #    self.save()
-    #def __str__(self):
-    #    return 'usuario {} </br> foto {} </br> likes {} </br> status {} </br> published_date {} </br></br></br> '.format(self.usuario, self.foto, self.likes, self.status, self.published_date)
-
-    
+    #    self.save()    
