@@ -24,6 +24,7 @@ from banner.views import photoViewList
 from django.conf.urls import include
 from social import views as social_views
 from banner import views as banner_views
+from pedido import views as pedido_views
 
 
 urlpatterns = [
@@ -33,4 +34,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('photos/', banner_views.photoViewList),
     path('social/', social_views.list_posts)
+    path('pasteles/', pedido_views.list_pasteles),
+    path('pedidos/', pedido_views.list_pedidos)
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

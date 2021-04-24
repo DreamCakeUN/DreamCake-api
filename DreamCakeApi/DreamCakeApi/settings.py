@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'statistics_api',    
     'social',
     'banner',
+    'pedido',
 
     # sslserver
     'sslserver',
