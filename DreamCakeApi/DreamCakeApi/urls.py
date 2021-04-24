@@ -20,7 +20,7 @@ from django.urls import path
 #from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from users.views import photoViewList
+from banner.views import photoViewList
 from django.conf.urls import include
 from social import views as social_views
 
