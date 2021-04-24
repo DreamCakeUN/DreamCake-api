@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 from banner.views import photoViewList
 from django.conf.urls import include
 from social import views as social_views
+from banner import views as banner_views
 
 
 urlpatterns = [
@@ -30,6 +31,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('stats/', include('statistics_api.urls')),
     path('users/', include('users.urls')),
-    path('photos/', photoViewList.as_view(), name='photo_list'),
+    path('photos/', banner_views.photoViewList),
     path('social/', social_views.list_posts)
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
