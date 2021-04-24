@@ -33,7 +33,7 @@ urlpatterns = [
     path('stats/', include('statistics_api.urls')),
     path('users/', include('users.urls')),
     path('photos/', banner_views.photoViewList),
-    path('social/', social_views.list_posts)
+    path('social/', social_views.list_posts),
     path('pasteles/', pedido_views.list_pasteles),
     path('pedidos/', pedido_views.list_pedidos)
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
