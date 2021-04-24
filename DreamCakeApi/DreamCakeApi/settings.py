@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'users',
     'statistics_api',    
     'social',
+    'banner',
 
     # sslserver
     'sslserver',
@@ -91,8 +92,7 @@ ROOT_URLCONF = 'DreamCakeApi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build'),
+        'DIRS': [            
             os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts'),
         ],  
         'APP_DIRS': True,
@@ -121,8 +121,8 @@ DATABASES = {
         'PASSWORD': 'raspberry',
         'HOST': 'z4yross.hopto.org',
         'PORT': '49152'
-        # 'HOST': '192.168.1.6',
-        # 'PORT': '5432'
+        #'HOST': '192.168.1.6',
+        #'PORT': '5432'
     }
 }
 
@@ -168,7 +168,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../../../Front/DreamCakeFront/build/static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
