@@ -7,46 +7,59 @@ from django.utils.translation import gettext_lazy as _
 
 class Pastel(models.Model):
     usuarios = models.ManyToManyField(User)
-    costo = models.FloatField(blank=True)
+    
     status_pastel = models.BooleanField(blank=True)
-    class Pisos(models.IntegerChoices):
-        SENCILLO_1 = 1
-        DOBLE_2 = 2
-        TRIPLE_3 = 3
-        ESPECIAL_4 = 4
+    
+    class Formas(models.TextChoices):
+        Circular = 'CI', _('Circular')
+        Cuadrado = 'CU', _('Cuadrado')
 
-    num_pisos = models.IntegerField(choices=Pisos.choices)
-    class Porciones(models.IntegerChoices):
-        _10 = 10
-        _15 = 15
-        _20 = 20
-        _30 = 30
-        
-    porciones = models.IntegerField(choices=Porciones.choices)
+    forma = models.TextField(choices=Formas.choices)
 
-    class Relleno(models.TextChoices):
+    num_pisos = models.IntegerField(blank=True)
+    
+    porciones = models.IntegerField(blank=True)
+
+    class Masas(models.TextChoices):
         Vainilla = 'VA', _('Vainilla')
         Chocolate = 'CH', _('Chocolate')
-        Merengue_Suizo = 'MS', _('MerengueSuizo')
-        Crema_Queso = 'CQ', _('CremaQueso')
+        Tres_Leches = 'TL', _('Tres Leches')
+        Red_Velvet = 'RV', _('RedVelvet')
+
+    masa = models.CharField(
+        choices=Masas.choices,
+        max_length=2
+    )
+
+    class Rellenos(models.TextChoices):
+        Arequipe = 'AQ', _('Arequipe')
+        Nutella = 'NU', _('Nutella')
+        Mermelada = 'ML', _('Mermelada') 
         Crema_Pastelera = 'CP', _('CremaPastelera')
 
     relleno = models.CharField(
-        choices=Relleno.choices,
+        choices=Rellenos.choices,
         max_length=2
     )
 
     class Cobertura(models.TextChoices):
-        Azucar = 'AZ', _('Azucar')
-        Mantequilla = 'MA', _('Mantequilla')
-        Chocolate = 'CH', _('Chocolate')
-        Chocolate_Blanco = 'CB', _('ChocolateBlanco')
+        Crema = 'CR', _('Crema')
         Fondant = 'FD', _('Fondant')
 
     Cobertrura = models.CharField(
         choices=Cobertura.choices,
         max_length=2
     )
+    class ColorCobertura(models.TextChoices):
+        Azul = 'CR', _('Crema')
+        Fondant = 'FD', _('Fondant')
+
+    Cobertrura = models.CharField(
+        choices=Cobertura.choices,
+        max_length=2
+    )
+
+    costo = models.FloatField(blank=False, default=0)
     
 
 class Pedido(models.Model):

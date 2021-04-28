@@ -12,6 +12,11 @@ class PastelSerializer(serializers.ModelSerializer):
         model = Pastel    
         fields = ['usuarios','costo','status_pastel','num_pisos', 'porciones']
 
+    def create(self, validated_data):
+        return Pastel(**validated_data)
+
+    
+
 class PedidoSerializer(serializers.ModelSerializer):
     pasteles = serializers.SlugRelatedField(
         many=True,
