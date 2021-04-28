@@ -46,16 +46,19 @@ class Pastel(models.Model):
         Crema = 'CR', _('Crema')
         Fondant = 'FD', _('Fondant')
 
-    Cobertrura = models.CharField(
+    Cobertura = models.CharField(
         choices=Cobertura.choices,
         max_length=2
     )
     class ColorCobertura(models.TextChoices):
-        Azul = 'CR', _('Crema')
-        Fondant = 'FD', _('Fondant')
+        Azul = 'AZ', _('Azul')
+        Amarillo = 'AM', _('Amarillo')
+        Blanco = 'BL', _('Amarillo')
+        Verde = 'VD', _('Verde')
+        Rojo = 'RJ', _('Rojo')
 
-    Cobertrura = models.CharField(
-        choices=Cobertura.choices,
+    ColorCobertura = models.CharField(
+        choices=ColorCobertura.choices,
         max_length=2
     )
 
