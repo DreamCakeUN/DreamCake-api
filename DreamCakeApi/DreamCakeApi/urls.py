@@ -35,5 +35,6 @@ urlpatterns = [
     path('photos/', banner_views.photoViewList),
     path('social/', social_views.list_posts),
     path('pasteles/', pedido_views.list_pasteles),
+    path('pasteles/<int:pk>/', pedido_views.pasteles_details),
     path('pedidos/', pedido_views.list_pedidos)
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

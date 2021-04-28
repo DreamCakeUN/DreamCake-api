@@ -59,7 +59,10 @@ class Pastel(models.Model):
         max_length=2
     )
 
-    costo = models.FloatField(blank=False, default=0)
+    costo = models.FloatField(blank=True, default=0)
+
+    def __str__(self):
+        return 'Pastel ' + str(self.id)
     
 
 class Pedido(models.Model):

@@ -2,24 +2,49 @@ from django.shortcuts import render
 from pedido.models import Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
 from .serializers import PastelSerializer, PedidoSerializer
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
-@csrf_exempt
-def list_pasteles(request):
 
+@api_view(['GET','POST'])
+
+def list_pasteles(request):
     if request.method == 'GET':
-        posts = Pastel.objects.all()
-        serializer = PastelSerializer(posts,many=True)
-        return JsonResponse(serializer.data,safe=False)
+        pasteles = Pastel.objects.all()
+        serializer = PastelSerializer(pasteles,many=True)
+        return Response(serializer.data)
+
     elif request.method == 'POST':
-         data = JSONParser.parse(request)
-         serializer = PastelSerializer(data = data)
+         serializer = PastelSerializer(data = request.data)
          if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data,status=201)
-         return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
+@api_view(['GET','PUT','DELETE'])
 
+def pasteles_details(request,pk):
+    try:
+        pastel = Pastel.objects.get(pk=pk)
+    except Pastel.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = PastelSerializer(pastel)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+         serializer = PastelSerializer(pastel, data = request.data)
+         if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)          
+    
+    elif request.method == 'DELETE':
+        pastel.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 def list_pedidos(request):
 
