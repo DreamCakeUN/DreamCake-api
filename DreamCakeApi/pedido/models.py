@@ -73,7 +73,14 @@ class Pedido(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     direccion = models.CharField(max_length=255)
     costo = models.FloatField(blank=True) 
-    status = models.BooleanField(blank=True)
+    status = models.IntegerField(blank=True)
     correo_asociado = models.EmailField(max_length=255)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length =255)
+
+class Imagen(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length = 180)
+    upload_date = models.DateTimeField(auto_now_add = True, null = True)
+    image = models.ImageField(upload_to='pedido', null = True, blank  = True)

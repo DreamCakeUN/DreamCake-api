@@ -37,5 +37,7 @@ urlpatterns = [
     path('pasteles/', pedido_views.list_pasteles),
     path('pasteles/<int:pk>/', pedido_views.pasteles_details),
     path('pedidos/', pedido_views.list_pedidos),
-    path('modpedido/<int:id_pedido>/', pedido_views.mod_pedido_get)
+    path('pedido/<int:id_pedido>/', pedido_views.list_pedidos_details),
+    path('delpedido/<int:id_pedido>/', pedido_views.eliminar_pedido),
+    path('imagenpedido/<int:id_pedido>/', pedido_views.photoPedido)
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

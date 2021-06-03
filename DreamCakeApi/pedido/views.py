@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from pedido.models import Pastel, Pedido
+from pedido.models import Imagen, Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
-from .serializers import PastelSerializer, PedidoSerializer
+from .serializers import ImagenSerializer, PastelSerializer, PedidoSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -53,13 +53,38 @@ def list_pedidos(request):
         serializer = PedidoSerializer(posts,many=True)
         return JsonResponse(serializer.data,safe=False)   
 
-@api_view(['GET','POST'])
+ 
 
-def mod_pedido_get(request, id_pedido):
+def list_pedidos_details(request, id_pedido):
     if request.method == 'GET':
         pedido = Pedido.objects.filter(id = id_pedido)
         serializer = PedidoSerializer(pedido,many=True)
         return JsonResponse(serializer.data,safe=False)   
 
-"""def mod_pedido_post(request, id_pedido):
-    if request.method == 'POST':"""
+def mod_pedido_put(request, id_pedido):
+    try:
+        pedido = Pedido.objects.filter(id = id_pedido)
+    except Pedido.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PUT':
+        serializer = PedidoSerializer(pedido, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+def eliminar_pedido(request, id_pedido):
+    try:
+        pedido = Pedido.objects.get(id = id_pedido)
+    except Pedido.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PUT':#?????
+        pedido.status = 3
+        pedido.save()
+        return HttpResponse(request)
+        
+def photoPedido(request, id_pedido):
+    if request.method == 'GET':
+        imagen = Imagen.objects.filter(id = id_pedido)
+        serializer = ImagenSerializer(imagen,many=True)
+        return JsonResponse(serializer.data,safe=False)

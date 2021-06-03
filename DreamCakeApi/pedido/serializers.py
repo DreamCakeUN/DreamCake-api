@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pedido, Pastel
+from .models import Pedido, Pastel, Imagen
 
 class PastelSerializer(serializers.ModelSerializer):
     usuarios = serializers.SlugRelatedField(
@@ -63,3 +63,8 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido    
         fields = ['pasteles','usuario','direccion','costo','status','correo_asociado','fecha_pedido', 'comentario']
+
+class ImagenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Imagen    
+        fields = ['pedido','usuario','descripcion','upload_date','image']
