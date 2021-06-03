@@ -51,4 +51,15 @@ def list_pedidos(request):
     if request.method == 'GET':
         posts = Pedido.objects.all()
         serializer = PedidoSerializer(posts,many=True)
-        return JsonResponse(serializer.data,safe=False)         
+        return JsonResponse(serializer.data,safe=False)   
+
+@api_view(['GET','POST'])
+
+def mod_pedido_get(request, id_pedido):
+    if request.method == 'GET':
+        pedido = Pedido.objects.filter(id = id_pedido)
+        serializer = PedidoSerializer(pedido,many=True)
+        return JsonResponse(serializer.data,safe=False)   
+
+"""def mod_pedido_post(request, id_pedido):
+    if request.method == 'POST':"""
