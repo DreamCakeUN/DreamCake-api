@@ -38,5 +38,8 @@ urlpatterns = [
     path('pasteles/<int:pk>/', pedido_views.pasteles_details),
     path('pedidos/', pedido_views.list_pedidos),
     path('crear_pedido/', pedido_views.CrearPedido.as_view(), name='Crear Pedido'),
-    path('crear_pastel/', pedido_views.CrearPastel.as_view(), name='Crear Pastel')
+    path('crear_pastel/', pedido_views.CrearPastel.as_view(), name='Crear Pastel'),
+    path('modificar_pastel/<int:pk>/', pedido_views.ModificarPastel.as_view(), name='Modificar Pastel'),
+    path('aceptar_pedido/<int:pk>/', pedido_views.AceptarPedido.as_view(), name='Aceptar Pedido'),
+    path('estado_pedido/<int:pk>/', pedido_views.EstadoPedido.as_view(), name='Estado Pedido'),
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
