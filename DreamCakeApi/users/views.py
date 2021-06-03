@@ -16,9 +16,13 @@ from rest_auth.registration.views import SocialConnectView, SocialLoginView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
+from rest_framework import status
 
-from .serializers import CallbackSerializer
+from .serializers import CallbackSerializer, CustomUserDetailsSerializer, DeleteUser
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
+from users.models import User
 
 
 
@@ -112,3 +116,19 @@ class GoogleLogin(APIView):
         client.state = SocialLogin.stash_state(request)
         url = client.get_redirect_url(adapter.authorize_url, auth_params)
         return Response({'url': url})
+
+class DisableAccount(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = DeleteUser
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+

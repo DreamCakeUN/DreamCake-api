@@ -120,10 +120,10 @@ DATABASES = {
         'NAME': 'DreamCake',
         'USER': 'postgres',
         'PASSWORD': 'raspberry',
-        'HOST': 'z4yross.hopto.org',
-        'PORT': '49152'
-        #'HOST': '192.168.1.6',
-        #'PORT': '5432'
+        # 'HOST': 'z4yross.hopto.org',
+        # 'PORT': '49152'
+        'HOST': '192.168.1.6',
+        'PORT': '5432'
     }
 }
 
@@ -197,9 +197,13 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 5
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = False
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+AUTH_USER_MODEL = "users.User"
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL='http'
 
@@ -227,3 +231,10 @@ SOCIALACCOUNT_PROVIDERS = {
 
 }
 
+REST_AUTH_SERIALIZERS = {'USER_DETAILS_SERIALIZER':'users.serializers.CustomUserDetailsSerializer' }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}

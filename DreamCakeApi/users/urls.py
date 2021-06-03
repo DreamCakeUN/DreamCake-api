@@ -66,6 +66,11 @@ api_urlpatterns = [
         SocialAccountDisconnectView.as_view(),
         name='social_account_disconnect',
     ),
+    path(
+        'auth/user/disable',
+        views.DisableAccount.as_view(),
+        name='disable_account'
+    )
 ]
 
 
