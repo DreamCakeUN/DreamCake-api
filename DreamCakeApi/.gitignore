@@ -202,3 +202,7 @@ statistics_api/__pycache__/
 statistics_api/migrations/
 social/__pycache__/
 social/migrations/
+pedido/__pycache__/
+pedido/migrations/
+banner/__pycache__/
+banner/migrations/
