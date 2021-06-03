@@ -6,6 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework import status
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 # Create your views here.
 
 @api_view(['GET','POST'])
@@ -52,3 +55,27 @@ def list_pedidos(request):
         posts = Pedido.objects.all()
         serializer = PedidoSerializer(posts,many=True)
         return JsonResponse(serializer.data,safe=False)         
+
+class CrearPedido(generics.CreateAPIView):
+    serializer_class = PedidoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response({
+            'status': 200,
+            'message': 'Pedido creado',
+            'data': response.data
+        })
+
+class CrearPastel(generics.CreateAPIView):
+    serializer_class = PastelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response({
+            'status': 200,
+            'message': 'Pedido creado',
+            'data': response.data
+        })

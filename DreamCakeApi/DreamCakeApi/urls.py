@@ -36,5 +36,7 @@ urlpatterns = [
     path('social/', social_views.list_posts),
     path('pasteles/', pedido_views.list_pasteles),
     path('pasteles/<int:pk>/', pedido_views.pasteles_details),
-    path('pedidos/', pedido_views.list_pedidos)
+    path('pedidos/', pedido_views.list_pedidos),
+    path('crear_pedido/', pedido_views.CrearPedido.as_view(), name='Crear Pedido'),
+    path('crear_pastel/', pedido_views.CrearPastel.as_view(), name='Crear Pastel')
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

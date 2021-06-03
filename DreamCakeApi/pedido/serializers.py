@@ -52,14 +52,19 @@ class PastelSerializer(serializers.ModelSerializer):
     
 
 class PedidoSerializer(serializers.ModelSerializer):
-    pasteles = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='id'
-     )
-    usuario = serializers.StringRelatedField(many= False, read_only=True)
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
-
     class Meta:
-        model = Pedido    
-        fields = ['pasteles','usuario','direccion','costo','status','correo_asociado','fecha_pedido', 'comentario']
+        model = Pedido   
+        fields = ('pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
+
+    def create(self, validated_data):
+        for (key, value) in validated_data.items():
+            print(key, value)
+        return Pedido.objects.create(**validated_data)
+
+    # def update(self, instance, validated_data):
+    #     for (key, value) in validated_data.items():
+    #         print(key, value)
+    #         setattr(instance, key, value)
+    #     instance.save()
+    #     return instance

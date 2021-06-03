@@ -9,7 +9,7 @@ from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 class Pastel(models.Model):
-    usuarios = models.ManyToManyField(User)
+    usuarios = models.ManyToManyField(User, related_name= "pasteles")
     
     status_pastel = models.BooleanField(blank=True)
     
@@ -72,11 +72,16 @@ class Pastel(models.Model):
     
 
 class Pedido(models.Model):
-    pasteles = models.ManyToManyField(Pastel)
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    direccion = models.CharField(max_length=255)
+    pasteles = models.ForeignKey(Pastel, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="email")
+    
+    direccion = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True) 
     status = models.BooleanField(blank=True)
-    correo_asociado = models.EmailField(max_length=255)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length =255)
+    domiciliario = models.BooleanField(default=False)
+
+    @property
+    def userEmail(self):
+        return self.user.email
