@@ -54,7 +54,6 @@ class PastelSerializer(serializers.ModelSerializer):
 class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
     class Meta:
-<<<<<<< HEAD
         model = Pedido   
         fields = ('pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
 
@@ -69,12 +68,9 @@ class PedidoSerializer(serializers.ModelSerializer):
     #         setattr(instance, key, value)
     #     instance.save()
     #     return instance
-=======
-        model = Pedido    
-        fields = ['pasteles','usuario','direccion','costo','status','correo_asociado','fecha_pedido', 'comentario']
+       
 
 class ImagenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Imagen    
         fields = ['pedido','usuario','descripcion','upload_date','image']
->>>>>>> CAKE-49_ME_Pedido_BE

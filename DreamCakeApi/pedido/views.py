@@ -54,8 +54,7 @@ def list_pedidos(request):
     if request.method == 'GET':
         posts = Pedido.objects.all()
         serializer = PedidoSerializer(posts,many=True)
-<<<<<<< HEAD
-        return JsonResponse(serializer.data,safe=False)         
+        return JsonResponse(serializer.data,safe=False)
 
 class CrearPedido(generics.CreateAPIView):
     serializer_class = PedidoSerializer
@@ -80,7 +79,6 @@ class CrearPastel(generics.CreateAPIView):
             'message': 'Pedido creado',
             'data': response.data
         })
-=======
         return JsonResponse(serializer.data,safe=False)   
 
  
@@ -91,7 +89,7 @@ def list_pedidos_details(request, id_pedido):
         serializer = PedidoSerializer(pedido,many=True)
         return JsonResponse(serializer.data,safe=False)   
 
-def mod_pedido_put(request, id_pedido):
+def mod_pedido_put(request, id_pedido):########
     try:
         pedido = Pedido.objects.filter(id = id_pedido)
     except Pedido.DoesNotExist:
@@ -118,4 +116,3 @@ def photoPedido(request, id_pedido):
         imagen = Imagen.objects.filter(id = id_pedido)
         serializer = ImagenSerializer(imagen,many=True)
         return JsonResponse(serializer.data,safe=False)
->>>>>>> CAKE-49_ME_Pedido_BE

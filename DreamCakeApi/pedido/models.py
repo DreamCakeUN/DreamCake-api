@@ -77,7 +77,6 @@ class Pedido(models.Model):
     
     direccion = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True) 
-<<<<<<< HEAD
     status = models.BooleanField(blank=True)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length =255)
@@ -86,16 +85,11 @@ class Pedido(models.Model):
     @property
     def userEmail(self):
         return self.user.email
-=======
-    status = models.IntegerField(blank=True)
-    correo_asociado = models.EmailField(max_length=255)
-    fecha_pedido = models.DateTimeField(auto_now_add=True)
-    comentario = models.CharField(max_length =255)
+    
 
 class Imagen(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="id")
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length = 180)
     upload_date = models.DateTimeField(auto_now_add = True, null = True)
     image = models.ImageField(upload_to='pedido', null = True, blank  = True)
->>>>>>> CAKE-49_ME_Pedido_BE
