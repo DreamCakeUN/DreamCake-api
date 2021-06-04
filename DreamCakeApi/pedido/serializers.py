@@ -55,7 +55,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
     class Meta:
         model = Pedido   
-        fields = ('idpedido', 'pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
+        fields = '__all__'
 
     def create(self, validated_data):
         for (key, value) in validated_data.items():
@@ -68,6 +68,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     #         setattr(instance, key, value)
     #     instance.save()
     #     return instance
+       
 
 
 class AceptarPedido(serializers.ModelSerializer):

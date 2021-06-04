@@ -76,6 +76,7 @@ class Pedido(models.Model):
     pasteles = models.ForeignKey(Pastel, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="id")
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="email")
     
+    foto = models.ImageField(upload_to='pedido', null=True)
     direccion = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True) 
     aceptado = models.BooleanField(blank=True)
@@ -87,3 +88,5 @@ class Pedido(models.Model):
     @property
     def userEmail(self):
         return self.user.email
+    
+

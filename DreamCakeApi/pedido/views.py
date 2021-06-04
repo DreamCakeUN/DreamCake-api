@@ -54,7 +54,7 @@ def list_pedidos(request):
     if request.method == 'GET':
         posts = Pedido.objects.all()
         serializer = PedidoSerializer(posts,many=True)
-        return JsonResponse(serializer.data,safe=False)         
+        return JsonResponse(serializer.data,safe=False)
 
 class CrearPedido(generics.CreateAPIView):
     serializer_class = PedidoSerializer
@@ -79,6 +79,37 @@ class CrearPastel(generics.CreateAPIView):
             'message': 'Pedido creado',
             'data': response.data
         })
+        return JsonResponse(serializer.data,safe=False)   
+
+ 
+
+def list_pedidos_details(request, id_pedido):
+    if request.method == 'GET':
+        pedido = Pedido.objects.filter(id = id_pedido)
+        serializer = PedidoSerializer(pedido,many=True)
+        return JsonResponse(serializer.data,safe=False)   
+
+def mod_pedido_put(request, id_pedido):########
+    try:
+        pedido = Pedido.objects.filter(id = id_pedido)
+    except Pedido.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PUT':
+        serializer = PedidoSerializer(pedido, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+def eliminar_pedido(request, id_pedido):
+    try:
+        pedido = Pedido.objects.get(id = id_pedido)
+    except Pedido.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'PUT':#?????
+        pedido.status = 3
+        pedido.save()
+        return HttpResponse(request)
 
 class ModificarPastel(generics.RetrieveUpdateAPIView):
     queryset = Pastel.objects.all()
