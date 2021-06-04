@@ -17,4 +17,9 @@ urlpatterns = [
         views.createCom.as_view(),
         name='crear comentario'
     ),
+	path(
+		'comments/<post>',
+		views.getAllCom.as_view(),
+		name='comentarios del post'
+	)
 ]
