@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pedido, Pastel, Imagen
+from .models import Pedido, Pastel
 
 class PastelSerializer(serializers.ModelSerializer):
     usuarios = serializers.SlugRelatedField(
@@ -55,7 +55,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
     class Meta:
         model = Pedido   
-        fields = ('idpedido', 'pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
+        fields = '__all__'
 
     def create(self, validated_data):
         for (key, value) in validated_data.items():
@@ -69,11 +69,6 @@ class PedidoSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
        
-
-class ImagenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Imagen    
-        fields = ['pedido','usuario','descripcion','upload_date','image']
 
 
 class AceptarPedido(serializers.ModelSerializer):

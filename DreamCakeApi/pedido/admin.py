@@ -1,6 +1,5 @@
 from django.contrib import admin
-from pedido.models import Pedido, Pastel, Imagen
+from pedido.models import Pedido, Pastel
 # Register your models here.
 admin.site.register(Pedido)
 admin.site.register(Pastel)
-admin.site.register(Imagen)

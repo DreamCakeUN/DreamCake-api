@@ -76,6 +76,7 @@ class Pedido(models.Model):
     pasteles = models.ForeignKey(Pastel, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="id")
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="email")
     
+    foto = models.ImageField(upload_to='pedido', null=True)
     direccion = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True) 
     aceptado = models.BooleanField(blank=True)
@@ -89,9 +90,3 @@ class Pedido(models.Model):
         return self.user.email
     
 
-class Imagen(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="idpedido")
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    descripcion = models.CharField(max_length = 180)
-    upload_date = models.DateTimeField(auto_now_add = True, null = True)
-    image = models.ImageField(upload_to='pedido', null = True, blank  = True)

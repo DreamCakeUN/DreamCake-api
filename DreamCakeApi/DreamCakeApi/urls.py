@@ -41,7 +41,6 @@ urlpatterns = [
     path('crear_pastel/', pedido_views.CrearPastel.as_view(), name='Crear Pastel'),
     path('pedido/<int:id_pedido>/', pedido_views.list_pedidos_details),
     path('delpedido/<int:id_pedido>/', pedido_views.eliminar_pedido),
-    path('imagenpedido/<int:id_pedido>/', pedido_views.photoPedido),
     path('modificar_pastel/<int:pk>/', pedido_views.ModificarPastel.as_view(), name='Modificar Pastel'),
     path('aceptar_pedido/<int:pk>/', pedido_views.AceptarPedido.as_view(), name='Aceptar Pedido'),
     path('estado_pedido/<int:pk>/', pedido_views.EstadoPedido.as_view(), name='Estado Pedido'),

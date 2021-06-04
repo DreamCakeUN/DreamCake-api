@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from pedido.models import Imagen, Pastel, Pedido
+from pedido.models import Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
-from .serializers import ImagenSerializer, PastelSerializer, PedidoSerializer
 from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -111,12 +110,6 @@ def eliminar_pedido(request, id_pedido):
         pedido.status = 3
         pedido.save()
         return HttpResponse(request)
-        
-def photoPedido(request, id_pedido):
-    if request.method == 'GET':
-        imagen = Imagen.objects.filter(id = id_pedido)
-        serializer = ImagenSerializer(imagen,many=True)
-        return JsonResponse(serializer.data,safe=False)
 
 class ModificarPastel(generics.RetrieveUpdateAPIView):
     queryset = Pastel.objects.all()
