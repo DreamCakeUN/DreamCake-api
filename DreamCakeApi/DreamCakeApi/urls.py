@@ -33,7 +33,7 @@ urlpatterns = [
     path('stats/', include('statistics_api.urls')),
     path('users/', include('users.urls')),
     path('photos/', banner_views.photoViewList),
-    path('social/', social_views.list_posts),
+    path('social/', include('social.urls')),
     path('pasteles/', pedido_views.list_pasteles),
     path('pasteles/<int:pk>/', pedido_views.pasteles_details),
     path('pedidos/', pedido_views.list_pedidos),

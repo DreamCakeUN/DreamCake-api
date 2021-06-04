@@ -74,7 +74,6 @@ class CrearPastel(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        print(kwargs['pk'])
         return Response({
             'status': 200,
             'message': 'Pedido creado',
