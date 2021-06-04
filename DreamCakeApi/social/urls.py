@@ -18,8 +18,23 @@ urlpatterns = [
         name='crear comentario'
     ),
 	path(
-		'comments/<post>',
+		'comments/<int:post>',
 		views.getAllCom.as_view(),
 		name='comentarios del post'
+	),
+	path(
+		'mod_com/<int:pk>',
+		views.ModerateCom.as_view(),
+		name='moderar post'
+	),
+	path(
+		'mod_post/<int:pk>',
+		views.ModeratePost.as_view(),
+		name='moderar comentario'
+	),
+	path(
+		'post_cake/<int:post>',
+		views.getPostCake.as_view(),
+		name='get cake from post'
 	)
 ]

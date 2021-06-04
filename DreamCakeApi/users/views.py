@@ -181,7 +181,7 @@ class AdminEditUser(generics.RetrieveUpdateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer = self.serializer_class(self.get_object(), data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
@@ -200,7 +200,7 @@ class ModEditUser(generics.RetrieveUpdateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer = self.serializer_class(self.get_object(), data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

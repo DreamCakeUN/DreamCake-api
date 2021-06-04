@@ -20,3 +20,27 @@ class ComSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = '__all__'
+
+class ModCom(serializers.ModelSerializer):
+    status = serializers.BooleanField()    
+    class Meta:
+        model = Comentario
+        fields = ('status',)
+
+    def update(self, instance, validated_data):
+        status = validated_data.pop('status', None)
+        instance.status = (status is not None) is True
+        instance.save()
+        return instance
+
+class ModPost(serializers.ModelSerializer):
+    status = serializers.BooleanField()
+    class Meta:
+        model = Post
+        fields = ('status',)
+
+    def update(self, instance, validated_data):
+        status = validated_data.pop('status', None)
+        instance.status = (status is not None) is True
+        instance.save()
+        return instance

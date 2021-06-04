@@ -79,7 +79,7 @@ class AceptarPedido(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         estado = validated_data.pop('aceptado', None)
-        instance.status = aceptado is not None
+        instance.status = (estado is not None) is True
         instance.save()
         return instance
 
