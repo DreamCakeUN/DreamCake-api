@@ -55,7 +55,7 @@ class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
     class Meta:
         model = Pedido   
-        fields = ('pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
+        fields = ('idpedido', 'pasteles','user','costo','status','fecha_pedido', 'comentario', 'domiciliario', 'direccion')
 
     def create(self, validated_data):
         for (key, value) in validated_data.items():
@@ -74,3 +74,23 @@ class ImagenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Imagen    
         fields = ['pedido','usuario','descripcion','upload_date','image']
+
+
+class AceptarPedido(serializers.ModelSerializer):
+    aceptado = serializers.BooleanField()
+    class Meta:
+        model = Pedido
+        fields = ('aceptado',)
+
+    def update(self, instance, validated_data):
+        estado = validated_data.pop('aceptado', None)
+        instance.status = aceptado is not None
+        instance.save()
+        return instance
+
+
+class EstadoPedido(serializers.ModelSerializer):
+    estado = serializers.IntegerField()
+    class Meta:
+        model = Pedido
+        fields = ('estado',)

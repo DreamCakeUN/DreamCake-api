@@ -33,7 +33,7 @@ urlpatterns = [
     path('stats/', include('statistics_api.urls')),
     path('users/', include('users.urls')),
     path('photos/', banner_views.photoViewList),
-    path('social/', social_views.list_posts),
+    path('social/', include('social.urls')),
     path('pasteles/', pedido_views.list_pasteles),
     path('pasteles/<int:pk>/', pedido_views.pasteles_details),
     path('pedidos/', pedido_views.list_pedidos),
@@ -42,4 +42,7 @@ urlpatterns = [
     path('pedido/<int:id_pedido>/', pedido_views.list_pedidos_details),
     path('delpedido/<int:id_pedido>/', pedido_views.eliminar_pedido),
     path('imagenpedido/<int:id_pedido>/', pedido_views.photoPedido),
+    path('modificar_pastel/<int:pk>/', pedido_views.ModificarPastel.as_view(), name='Modificar Pastel'),
+    path('aceptar_pedido/<int:pk>/', pedido_views.AceptarPedido.as_view(), name='Aceptar Pedido'),
+    path('estado_pedido/<int:pk>/', pedido_views.EstadoPedido.as_view(), name='Estado Pedido'),
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

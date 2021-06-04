@@ -53,3 +53,23 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
             'is_staff'
         )
         read_only_fields = ('email', 'last_login', 'is_superuser', 'is_staff', 'is_active')
+
+
+class AdminUserSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = User
+        fields = '__all__'
+        read_only_fields = ('last_login',)
+
+
+class ModeratorUserSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = User
+        fields = '__all__'
+        read_only_fields = ('last_login', 'is_superuser', 'email')
+
+
+class GetUserID(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email')

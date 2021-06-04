@@ -72,12 +72,14 @@ class Pastel(models.Model):
     
 
 class Pedido(models.Model):
-    pasteles = models.ForeignKey(Pastel, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="id")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="email")
+    idpedido = models.AutoField(primary_key=True, default = None)
+    pasteles = models.ForeignKey(Pastel, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name="pedidos", to_field="email")
     
     direccion = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True) 
-    status = models.BooleanField(blank=True)
+    aceptado = models.BooleanField(blank=True)
+    estado = models.IntegerField(default=0)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     comentario = models.CharField(max_length =255)
     domiciliario = models.BooleanField(default=False)
@@ -88,7 +90,7 @@ class Pedido(models.Model):
     
 
 class Imagen(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="id")
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, null=True, related_name="pedidos", to_field="idpedido")
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length = 180)
     upload_date = models.DateTimeField(auto_now_add = True, null = True)

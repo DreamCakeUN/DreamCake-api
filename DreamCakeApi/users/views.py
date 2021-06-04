@@ -18,11 +18,36 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-from .serializers import CallbackSerializer, CustomUserDetailsSerializer, DeleteUser
+from .serializers import CallbackSerializer, CustomUserDetailsSerializer, DeleteUser, AdminUserSerializer, GetUserID, ModeratorUserSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from users.models import User
+
+from rest_framework import authentication
+from rest_framework import permissions
+
+# AUTENTICATION
+class AdminAuthenticationPermission(permissions.BasePermission):
+    ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
+
+    def has_permission(self, request, view):
+        user = request.user
+        if user and user.is_superuser:
+            return user.is_superuser or \
+                not any(isinstance(request._authenticator, x) for x in self.ADMIN_ONLY_AUTH_CLASSES) 
+        return False
+
+
+class ModeratorAuthenticationPermission(permissions.BasePermission):
+    ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
+
+    def has_permission(self, request, view):
+        user = request.user
+        if user and user.is_staff:
+            return user.is_staff or \
+                not any(isinstance(request._authenticator, x) for x in self.ADMIN_ONLY_AUTH_CLASSES) 
+        return False
 
 
 
@@ -131,4 +156,54 @@ class DisableAccount(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class getID(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    lookup_field = 'email'
+
+    serializer_class = GetUserID
+    permission_classes = [IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AdminEditUser(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = AdminUserSerializer
+    permission_classes = [IsAuthenticated, AdminAuthenticationPermission]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ModEditUser(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = ModeratorUserSerializer
+    permission_classes = [IsAuthenticated, ModeratorAuthenticationPermission]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 

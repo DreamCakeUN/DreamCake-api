@@ -2,6 +2,7 @@ from django.shortcuts import render
 from pedido.models import Imagen, Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
 from .serializers import ImagenSerializer, PastelSerializer, PedidoSerializer
+from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -116,3 +117,61 @@ def photoPedido(request, id_pedido):
         imagen = Imagen.objects.filter(id = id_pedido)
         serializer = ImagenSerializer(imagen,many=True)
         return JsonResponse(serializer.data,safe=False)
+
+class ModificarPastel(generics.RetrieveUpdateAPIView):
+    queryset = Pastel.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = PastelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AceptarPedido(generics.RetrieveUpdateAPIView):
+    queryset = Pedido.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = AceptarPedido
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class EstadoPedido(generics.RetrieveUpdateAPIView):
+    queryset = Pedido.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = EstadoPedido
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.serializer_class(self.get_object())
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
