@@ -6,6 +6,9 @@ from rest_auth.registration.serializers import SocialLoginSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from rest_framework.validators import UniqueValidator
+from django.contrib.auth.password_validation import validate_password
+
 from django.conf import settings
 from users.models import User
 
@@ -39,6 +42,11 @@ class DeleteUser(serializers.ModelSerializer):
         instance.save()
         return instance
 
+class PublicUserDetailSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('full_name','foto')
+        read_only_fields = ('full_name','foto')
 
 class CustomUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,9 +58,10 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
             'is_active', 
             'last_login', 
             'is_superuser', 
-            'is_staff'
+            'is_staff',
+            'foto'
         )
-        read_only_fields = ('email', 'last_login', 'is_superuser', 'is_staff', 'is_active')
+        read_only_fields = ('email', 'last_login', 'is_superuser', 'is_staff', 'is_active', "pasteles")
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
@@ -73,3 +82,31 @@ class GetUserID(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email')
+
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+            required=True,
+            validators=[UniqueValidator(queryset=User.objects.all())]
+            )
+
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('email', 'password', 'password2')
+
+    def create(self, validated_data):
+
+        user = User.objects.create_user(
+            email=validated_data['email'],
+            password=validated_data['password'],
+        )
+
+        return user
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+        return attrs

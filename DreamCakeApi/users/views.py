@@ -18,7 +18,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-from .serializers import CallbackSerializer, CustomUserDetailsSerializer, DeleteUser, AdminUserSerializer, GetUserID, ModeratorUserSerializer
+from .serializers import CallbackSerializer, CustomUserDetailsSerializer, DeleteUser, AdminUserSerializer, GetUserID, ModeratorUserSerializer, UserSerializer
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
@@ -205,5 +205,14 @@ class ModEditUser(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CreateUserView(generics.CreateAPIView):
+
+    model = User
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
+    serializer_class = UserSerializer
 
 

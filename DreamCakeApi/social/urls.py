@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 	path(
-        'all_posts/<atr>',
+        'all_posts/<atr>/<int:count>',
         views.getAllPosts.as_view(),
         name='get all posts'
     ),

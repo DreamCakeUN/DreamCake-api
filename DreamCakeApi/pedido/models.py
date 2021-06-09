@@ -66,6 +66,7 @@ class Pastel(models.Model):
     )
 
     costo = models.FloatField(blank=True, default=0)
+    mensaje = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return 'Pastel ' + str(self.id)

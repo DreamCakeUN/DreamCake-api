@@ -50,11 +50,12 @@ class getAllPosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     lookup_url_kwarg = "atr"
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         atr = self.kwargs.get(self.lookup_url_kwarg)
-        return Post.objects.filter(status = True).order_by(atr)
+        count = self.kwargs.get("count")
+        return Post.objects.filter(status = True).order_by(atr)[:count]
 
 class getAllCom(generics.ListAPIView):
     queryset = Comentario.objects.all()

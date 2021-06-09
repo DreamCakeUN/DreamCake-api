@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Comentario
+from users.serializers import PublicUserDetailSerilizer
 
 # class PostSerializer(serializers.ModelSerializer):
 #     usuario = serializers.StringRelatedField(many= False, read_only=True)
@@ -10,6 +11,8 @@ from .models import Post, Comentario
                 
 class PostSerializer(serializers.ModelSerializer):
     published_date = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
+
+    usuario = PublicUserDetailSerilizer()
     class Meta:
         model = Post
         fields = '__all__'
