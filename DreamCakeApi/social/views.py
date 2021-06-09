@@ -50,6 +50,7 @@ class getAllPosts(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
     lookup_url_kwarg = "atr"
+    permission_classes = []
 
     def get_queryset(self):
         atr = self.kwargs.get(self.lookup_url_kwarg)
