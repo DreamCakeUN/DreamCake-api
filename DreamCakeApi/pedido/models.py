@@ -53,20 +53,20 @@ class Pastel(models.Model):
         choices=Cobertura.choices,
         max_length=2
     )
-    class ColorCobertura(models.TextChoices):
-        Azul = 'AZ', _('Azul')
-        Amarillo = 'AM', _('Amarillo')
-        Blanco = 'BL', _('Amarillo')
-        Verde = 'VD', _('Verde')
-        Rojo = 'RJ', _('Rojo')
+    # class ColorCobertura(models.TextChoices):
+    #     Azul = 'AZ', _('Azul')
+    #     Amarillo = 'AM', _('Amarillo')
+    #     Blanco = 'BL', _('Amarillo')
+    #     Verde = 'VD', _('Verde')
+    #     Rojo = 'RJ', _('Rojo')
 
-    color = models.CharField(
-        choices=ColorCobertura.choices,
-        max_length=2
-    )
-
+    # color = models.CharField(
+    #     choices=ColorCobertura.choices,
+    #     max_length=2
+    # )
+    color = models.CharField(max_length=255, null=True)
     costo = models.FloatField(blank=True, default=0)
-    mensaje = models.CharField(max_length=255, null=True)
+    mensaje = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return 'Pastel ' + str(self.id)

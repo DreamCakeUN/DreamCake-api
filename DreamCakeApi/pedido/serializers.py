@@ -27,7 +27,7 @@ class PastelSerializer(serializers.ModelSerializer):
         instance.porciones = validated_data.get('porciones', instance.porciones)
         instance.masa = validated_data.get('masa', instance.masa)
         instance.relleno = validated_data.get('relleno', instance.relleno)
-        instance.cobertrura = validated_data.get('Cobertrura', instance.Cobertrura)
+        instance.cobertrura = validated_data.get('cobertrura', instance.Cobertrura)
         instance.costo = validated_data.get('costo', instance.costo)
         
         if (instance.forma == 'CI'):
