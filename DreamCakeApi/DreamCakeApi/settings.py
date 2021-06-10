@@ -120,10 +120,10 @@ DATABASES = {
         'NAME': 'DreamCake',
         'USER': 'postgres',
         'PASSWORD': 'raspberry',
-        # 'HOST': 'z4yross.hopto.org',
-        # 'PORT': '49152'
-        'HOST': '192.168.1.6',
-        'PORT': '5432'
+        'HOST': 'z4yross.hopto.org',
+        'PORT': '49152'
+        # 'HOST': '192.168.1.6',
+        # 'PORT': '5432'
     }
 }
 
@@ -175,19 +175,16 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # CORS
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:3000',
-# ] 
-# CORS_ORIGIN_REGEX_WHITELIST = [
-#     'http://localhost:3030',
-# ]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+] 
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3030',
+]
 ALLOWED_HOSTS=['*']
-# If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
-# CORS_ORIGIN_REGEX_WHITELIST = [
-#     'http://localhost:3000',
-# ]
+
 
 
 # ALLAUTH CONFIGURATION
@@ -239,5 +236,6 @@ REST_AUTH_SERIALIZERS = {'USER_DETAILS_SERIALIZER':'users.serializers.CustomUser
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
