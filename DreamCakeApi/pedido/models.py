@@ -49,7 +49,7 @@ class Pastel(models.Model):
         Crema = 'CR', _('Crema')
         Fondant = 'FD', _('Fondant')
 
-    Cobertura = models.CharField(
+    cobertura = models.CharField(
         choices=Cobertura.choices,
         max_length=2
     )
@@ -60,7 +60,7 @@ class Pastel(models.Model):
         Verde = 'VD', _('Verde')
         Rojo = 'RJ', _('Rojo')
 
-    ColorCobertura = models.CharField(
+    color = models.CharField(
         choices=ColorCobertura.choices,
         max_length=2
     )
