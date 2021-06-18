@@ -38,7 +38,7 @@ class DeleteUser(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         is_active = validated_data.pop('is_active', None)
-        instance.is_active = (is_active is not None) is True
+        instance.is_active = False if is_active is None else is_active
         instance.save()
         return instance
 

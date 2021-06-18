@@ -21,14 +21,18 @@ class PastelSerializer(serializers.ModelSerializer):
         return Pastel.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        print(validated_data['costo'])
+        # print(validated_data['costo'])
+        # instance.status_pastel = validated_data.get('status_pastel', instance.status_pastel)
         instance.forma = validated_data.get('forma', instance.forma)
         instance.num_pisos = validated_data.get('num_pisos', instance.num_pisos)
         instance.porciones = validated_data.get('porciones', instance.porciones)
         instance.masa = validated_data.get('masa', instance.masa)
         instance.relleno = validated_data.get('relleno', instance.relleno)
-        instance.cobertrura = validated_data.get('cobertrura', instance.Cobertrura)
+        instance.cobertura = validated_data.get('cobertura', instance.cobertura)
         instance.costo = validated_data.get('costo', instance.costo)
+
+        status_pastel = validated_data.pop('status_pastel', None)
+        instance.status_pastel = False if status_pastel is None else status_pastel
         
         if (instance.forma == 'CI'):
             instance.costo += 10000

@@ -32,7 +32,7 @@ class ModCom(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         status = validated_data.pop('status', None)
-        instance.status = (status is not None) is True
+        instance.status = False if status is None else status
         instance.save()
         return instance
 
@@ -44,6 +44,6 @@ class ModPost(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         status = validated_data.pop('status', None)
-        instance.status = (status is not None) is True
+        instance.status = False if status is None else status
         instance.save()
         return instance
