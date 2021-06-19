@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from pedido.models import Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
-from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido
+from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido, AddUserToPaselSerializer, EditarPastelSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -11,7 +11,31 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 # Create your views here.
 
+from rest_framework import authentication
+from rest_framework import permissions
+
 @api_view(['GET','POST'])
+
+class AdminAuthenticationPermission(permissions.BasePermission):
+    ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
+
+    def has_permission(self, request, view):
+        user = request.user
+        if user and user.is_superuser:
+            return user.is_superuser or \
+                not any(isinstance(request._authenticator, x) for x in self.ADMIN_ONLY_AUTH_CLASSES) 
+        return False
+
+
+class ModeratorAuthenticationPermission(permissions.BasePermission):
+    ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
+
+    def has_permission(self, request, view):
+        user = request.user
+        if user and user.is_staff:
+            return user.is_staff or \
+                not any(isinstance(request._authenticator, x) for x in self.ADMIN_ONLY_AUTH_CLASSES) 
+        return False
 
 def list_pasteles(request):
     if request.method == 'GET':
@@ -62,11 +86,7 @@ class CrearPedido(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'Pedido creado',
-            'data': response.data
-        })
+        return response
 
 class CrearPastel(generics.CreateAPIView):
     serializer_class = PastelSerializer
@@ -74,13 +94,29 @@ class CrearPastel(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'Pedido creado',
-            'data': response.data
-        })
-        return JsonResponse(serializer.data,safe=False)   
+        return response  
 
+class EditarPastel(generics.CreateAPIView):
+    serializer_class = EditarPastelSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
+
+    def get_serializer_context(self):
+        pk = self.kwargs.get(self.lookup_field)
+        context = super().get_serializer_context()
+        context["prev"] = Pastel.objects.filter(pk = pk).get()
+        return context
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return response
+
+class CopiarPasel(generics.RetrieveUpdateAPIView):
+    queryset = Pastel.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = AddUserToPaselSerializer
+    permission_classes = [IsAuthenticated]
  
 
 def list_pedidos_details(request, id_pedido):
@@ -89,7 +125,7 @@ def list_pedidos_details(request, id_pedido):
         serializer = PedidoSerializer(pedido,many=True)
         return JsonResponse(serializer.data,safe=False)   
 
-def mod_pedido_put(request, id_pedido):########
+def mod_pedido_put(request, id_pedido):
     try:
         pedido = Pedido.objects.filter(id = id_pedido)
     except Pedido.DoesNotExist:
@@ -116,7 +152,7 @@ class ModificarPastel(generics.RetrieveUpdateAPIView):
     lookup_field = 'pk'
 
     serializer_class = PastelSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission]
 
     def retrieve(self, request, *args, **kwargs):
         serializer = self.serializer_class(self.get_object())
@@ -128,7 +164,6 @@ class ModificarPastel(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class AceptarPedido(generics.RetrieveUpdateAPIView):
     queryset = Pedido.objects.all()

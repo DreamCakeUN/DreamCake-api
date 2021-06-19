@@ -5,7 +5,7 @@ class PastelSerializer(serializers.ModelSerializer):
     usuarios = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field='username'
+        slug_field='email'
      )
     #published_date = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
     class Meta:
@@ -17,8 +17,11 @@ class PastelSerializer(serializers.ModelSerializer):
         if validated_data['forma'] == 'CI':
             costo_final += 10000   
         validated_data['costo'] = costo_final
-        print(validated_data['costo'])
-        return Pastel.objects.create(**validated_data)
+        # response.usuarios.add()
+
+        instance = super(PastelSerializer, self).create(validated_data)
+        instance.usuarios.add(self.context['request'].user.id)
+        return instance
 
     def update(self, instance, validated_data):
         # print(validated_data['costo'])
@@ -53,7 +56,42 @@ class PastelSerializer(serializers.ModelSerializer):
         # Modify validated_data with the value you need
         #return super().update(instance, validated_data)   
 
-    
+class AddUserToPaselSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pastel
+        fields = ('usuarios',)
+        read_only_fields = ('usuarios',)
+
+    def update(self, instance, data):
+        instance.usuarios.add(self.context['request'].user.pk)
+        instance.save()
+        return instance
+
+class EditarPastelSerializer(serializers.ModelSerializer):
+    usuarios = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='email'
+     )
+
+    class Meta:
+        model = Pastel
+        fields = '__all__'
+
+    def create(self, validated_data):
+        prev = self.context['prev'].__dict__
+        mod = False
+
+        for k in validated_data.keys():
+            mod = validated_data[k] is not prev[k] if not mod else False
+
+        if not mod:
+            raise serializers.ValidationError({"detail": "No se modifico"})
+
+        instance = super().create(validated_data)
+        instance.usuarios.add(self.context['request'].user.id)
+        return instance
+
 
 class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
@@ -73,7 +111,6 @@ class PedidoSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
        
-
 
 class AceptarPedido(serializers.ModelSerializer):
     aceptado = serializers.BooleanField()
