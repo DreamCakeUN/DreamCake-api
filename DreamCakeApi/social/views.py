@@ -61,6 +61,7 @@ class getAllCom(generics.ListAPIView):
     queryset = Comentario.objects.all()
     serializer_class =serializers.ComSerializer
     lookup_url_kwarg = 'post'
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         post = self.kwargs.get(self.lookup_url_kwarg)
