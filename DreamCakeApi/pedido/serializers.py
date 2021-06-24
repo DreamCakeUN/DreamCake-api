@@ -111,7 +111,6 @@ class PedidoSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
        
-
 class AceptarPedido(serializers.ModelSerializer):
     aceptado = serializers.BooleanField()
     class Meta:

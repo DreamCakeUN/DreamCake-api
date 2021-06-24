@@ -27,6 +27,7 @@ from users.models import User
 from rest_framework import authentication
 from rest_framework import permissions
 
+
 # AUTENTICATION
 class AdminAuthenticationPermission(permissions.BasePermission):
     ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
@@ -214,5 +215,6 @@ class CreateUserView(generics.CreateAPIView):
         permissions.AllowAny # Or anon users can't register
     ]
     serializer_class = UserSerializer
+
 
 

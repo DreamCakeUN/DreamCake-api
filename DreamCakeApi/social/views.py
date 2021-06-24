@@ -16,6 +16,7 @@ from . import serializers
 from pedido.models import Pastel
 from pedido.serializers import PastelSerializer
 
+
 class AdminAuthenticationPermission(permissions.BasePermission):
     ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
 

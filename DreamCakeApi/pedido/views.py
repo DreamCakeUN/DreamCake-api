@@ -9,13 +9,12 @@ from rest_framework import status
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
-# Create your views here.
 
 from rest_framework import authentication
 from rest_framework import permissions
 
 from users.models import User
-@api_view(['GET','POST'])
+# @api_view(['GET','POST'])
 
 class AdminAuthenticationPermission(permissions.BasePermission):
     ADMIN_ONLY_AUTH_CLASSES = [authentication.BasicAuthentication, authentication.SessionAuthentication]
@@ -80,6 +79,8 @@ def list_pedidos(request):
         posts = Pedido.objects.all()
         serializer = PedidoSerializer(posts,many=True)
         return JsonResponse(serializer.data,safe=False)
+
+
 
 class CrearPedido(generics.CreateAPIView):
     serializer_class = PedidoSerializer
@@ -223,6 +224,20 @@ class GetUserCake(generics.ListAPIView):
         useremail = self.kwargs.get(self.lookup_url_kwarg)
         user = User.objects.get(email = useremail)
         return Pastel.objects.filter(usuarios = user)
+
+
+class ListPedidos(generics.ListAPIView):
+    queryset = Pedido.objects.all()
+
+    serializer_class = PedidoSerializer
+    permission_classes = (permissions.IsAuthenticated, AdminAuthenticationPermission)
+
+    lookup_url_kwarg = 'user_email'
+
+    def get_queryset(self):
+        userMail = self.kwargs.get(self.lookup_url_kwarg)
+        # user = User.objects.get(pk = userMail)
+        return Pedido.objects.filter(user = userMail)
 
 
 

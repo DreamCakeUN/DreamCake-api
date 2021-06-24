@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     # rest framework        
     'rest_framework',
     'rest_framework.authtoken',
+    'djangochannelsrestframework',
+    'channels',
 
     #fullurls
     'fullurl',
@@ -70,11 +72,15 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
 
+    # # websockets
+
+    # 'djangochannelsrestframework',
+
+
     # django extensions
     'django_extensions',
 
-    'corsheaders'
-    
+    'corsheaders'    
 ]
 
 MIDDLEWARE = [
@@ -89,6 +95,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'DreamCakeApi.urls'
+
+CHANNEL_LAYER = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('192.168.1.6', 6379)],
+        },
+    },
+}
+
+ASGI_APPLICATION = "DreamCakeApi.asgi.application"
 
 TEMPLATES = [
     {
