@@ -1,0 +1,12 @@
+django
+pillow
+psycopg2
+djangorestframework
+djangochannelsrestframework
+django-fullurl
+django-sslserver
+django-rest-auth
+django-allauth
+django-extensions
+django-cors-headers
+
