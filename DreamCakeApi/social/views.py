@@ -82,11 +82,7 @@ class createPost(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'Post creado',
-            'data': response.data
-        })
+        return response
 
 class createCom(generics.CreateAPIView):
     serializer_class = serializers.ComSerializer
@@ -94,11 +90,7 @@ class createCom(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
-        return Response({
-            'status': 200,
-            'message': 'Com creado',
-            'data': response.data
-        })
+        return response
 
 class ModerateCom(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission)

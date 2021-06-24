@@ -12,10 +12,16 @@ from users.serializers import PublicUserDetailSerilizer
 class PostSerializer(serializers.ModelSerializer):
     published_date = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
 
-    usuario = PublicUserDetailSerilizer()
+    # usuario = PublicUserDetailSerilizer()
     class Meta:
         model = Post
         fields = '__all__'
+        read_only_fields = ("usuario", )
+
+    def create(self, validated_data):
+        validated_data["usuario"] = self.context['request'].user
+        instance = super().create(validated_data)
+        return instance
 
 class ComSerializer(serializers.ModelSerializer):
     published_date = serializers.DateTimeField(format = '%Y-%h-%d ',read_only=True)
