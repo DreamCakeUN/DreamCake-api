@@ -59,3 +59,14 @@ class ModPost(serializers.ModelSerializer):
         instance.status = False if status is None else status
         instance.save()
         return instance
+
+class LikePost(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ['likes']
+        read_only_fields = ['likes']
+
+    def update(self, instance, validated_data):
+        validated_data['likes'] = instance.likes + 1
+        return super().update(instance, validated_data)

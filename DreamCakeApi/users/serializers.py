@@ -110,3 +110,5 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Password fields didn't match."})
 
         return attrs
+
+

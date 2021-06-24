@@ -36,5 +36,10 @@ urlpatterns = [
 		'post_cake/<int:post>',
 		views.getPostCake.as_view(),
 		name='get cake from post'
-	)
+	),
+	path(
+		'like/<int:pk>/', 
+		views.LikePost.as_view(), 
+		name='like post'
+	),
 ]

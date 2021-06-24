@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from social.models import Post, Comentario
 from django.http import HttpResponse, JsonResponse
-from .serializers import PostSerializer
+from .serializers import PostSerializer, LikePost
 from django.db.models.functions import Coalesce
 
 from rest_framework import generics
@@ -128,3 +128,10 @@ class ModeratePost(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class LikePost(generics.RetrieveUpdateAPIView):
+    queryset = Post.objects.all()
+    lookup_url_kwarg = 'pk'
+
+    serializer_class = LikePost
+    permission_classes = [permissions.IsAuthenticated]
