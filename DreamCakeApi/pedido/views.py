@@ -14,6 +14,7 @@ from rest_framework import generics
 from rest_framework import authentication
 from rest_framework import permissions
 
+from users.models import User
 @api_view(['GET','POST'])
 
 class AdminAuthenticationPermission(permissions.BasePermission):
@@ -200,6 +201,28 @@ class EstadoPedido(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetCake(generics.ListAPIView):
+    queryset = Pastel.objects.all()
+    
+    serializer_class = PastelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Pastel.objects.filter(usuarios = self.request.user)
+
+class GetUserCake(generics.ListAPIView):
+    queryset = Pastel.objects.all()
+    
+    serializer_class = PastelSerializer
+    permission_classes = [IsAuthenticated]
+
+    lookup_url_kwarg = 'user_email'
+
+    def get_queryset(self):
+        useremail = self.kwargs.get(self.lookup_url_kwarg)
+        user = User.objects.get(email = useremail)
+        return Pastel.objects.filter(usuarios = user)
 
 
 

@@ -29,6 +29,12 @@ class ComSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = '__all__'
+        read_only_fields = ("usuario", )
+
+    def create(self, validated_data):
+        validated_data["usuario"] = self.context['request'].user
+        instance = super().create(validated_data)
+        return instance
 
 class ModCom(serializers.ModelSerializer):
     status = serializers.BooleanField()    
