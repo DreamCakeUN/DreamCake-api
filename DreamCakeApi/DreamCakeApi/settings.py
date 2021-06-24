@@ -98,10 +98,10 @@ ROOT_URLCONF = 'DreamCakeApi.urls'
 
 CHANNEL_LAYER = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [('192.168.1.6', 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        # "CONFIG": {
+        #     "hosts": [('192.168.1.6', 6379)],
+        # },
     },
 }
 
