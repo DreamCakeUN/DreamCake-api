@@ -96,7 +96,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'DreamCakeApi.urls'
 
-CHANNEL_LAYER = {
+CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
         # "CONFIG": {

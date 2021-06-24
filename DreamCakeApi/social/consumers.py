@@ -2,9 +2,11 @@ from django.contrib.sessions.models import Session
 
 from users.models import User
 from pedido.models import Pedido
+from social.models import Post
 
 from users.serializers import UserSerializer
 from pedido import serializers as pedido_serializers
+from social import serializers as social_serializers
 
 from asgiref.sync import sync_to_async
 
@@ -47,6 +49,24 @@ class AdminAuthenticationPermission(permissions.BasePermission):
 
         return False
 
+
+class AuthenticationPermission(permissions.BasePermission):
+    async def has_permission(self, scope, consumer, action):
+        cookies = scope.get("cookies")
+
+        if 'sessionid' in cookies.keys():
+            sessionid = cookies['sessionid']
+            
+            session = sync_to_async(Session.objects.get)(session_key=sessionid)
+
+            session_data = (await session).get_decoded()
+            uid = await sync_to_async(session_data.get)('_auth_user_id')
+            user = await sync_to_async(User.objects.get)(id=uid)
+
+            return user.is_active
+
+        return False
+
 class PedidoConsumer(GenericAsyncAPIConsumer,):
     queryset = Pedido.objects.all()
     serializer_class = pedido_serializers.PedidoSerializer
@@ -63,3 +83,20 @@ class PedidoConsumer(GenericAsyncAPIConsumer,):
     @action()
     async def subscribe_to_pedido_activity(self, **kwargs):
         await self.pedido_activity.subscribe()
+
+class PostConsumer(GenericAsyncAPIConsumer,):
+    queryset = Post.objects.all()
+    serializer_class = social_serializers.PostSerializer
+    permission_classes = (AuthenticationPermission,)
+
+    @model_observer(Post)
+    async def post_activity(self, message: social_serializers.PostSerializer, observer=None, **kwargs):
+        await self.send_json(message.data)
+
+    @post_activity.serializer
+    def post_activity(self, instance: Post, action, **kwargs) -> social_serializers.PostSerializer:
+        return social_serializers.PostSerializer(instance)
+
+    @action()
+    async def subscribe_to_post_activity(self, **kwargs):
+        await self.post_activity.subscribe()
