@@ -48,4 +48,7 @@ urlpatterns = [
     path('copiar_pastel/<int:pk>/', pedido_views.EditarPastel.as_view(), name='Copiar Pastel'),
     path('aceptar_pedido/<int:pk>/', pedido_views.AceptarPedido.as_view(), name='Aceptar Pedido'),
     path('estado_pedido/<int:pk>/', pedido_views.EstadoPedido.as_view(), name='Estado Pedido'),
+    path('all_pedidos/<atr>/', pedido_views.AllPedidos.as_view(), name='todos los pedidos'),
+    path('pedido_by_status/<int:status>/<atr>/', pedido_views.PedidosByStatus.as_view(), name='pedidos con status'),
+    path('pedido_by_accept/<int:acp>/<atr>/', pedido_views.PedidosByAccept.as_view(), name='Estado pedidos con accpt'),
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

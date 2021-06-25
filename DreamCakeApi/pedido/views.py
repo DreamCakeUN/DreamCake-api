@@ -239,5 +239,35 @@ class ListPedidos(generics.ListAPIView):
         # user = User.objects.get(pk = userMail)
         return Pedido.objects.filter(user = userMail)
 
+class AllPedidos(generics.ListAPIView):
+    queryset = Pedido.objects.all()
+    serializer_class = PedidoSerializer
+    lookup_url_kwarg = "atr"
+    permission_classes = [AdminAuthenticationPermission]
+
+    def get_queryset(self):
+        atr = self.kwargs.get(self.lookup_url_kwarg)
+        return Pedido.objects.all().order_by(atr)
 
 
+class PedidosByStatus(generics.ListAPIView):
+    queryset = Pedido.objects.all()
+    serializer_class = PedidoSerializer
+    lookup_url_kwarg = "status"
+    permission_classes = [AdminAuthenticationPermission]
+
+    def get_queryset(self):
+        status = self.kwargs.get(self.lookup_url_kwarg)
+        atr = self.kwargs.get("atr")
+        return Pedido.objects.filter(estado = status).order_by(atr)
+
+class PedidosByAccept(generics.ListAPIView):
+    queryset = Pedido.objects.all()
+    serializer_class = PedidoSerializer
+    lookup_url_kwarg = "acp"
+    permission_classes = [AdminAuthenticationPermission]
+
+    def get_queryset(self):
+        acp = self.kwargs.get(self.lookup_url_kwarg)
+        atr = self.kwargs.get("atr")
+        return Pedido.objects.filter(aceptado = acp).order_by(atr)
