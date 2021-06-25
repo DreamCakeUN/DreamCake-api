@@ -42,4 +42,9 @@ urlpatterns = [
 		views.LikePost.as_view(), 
 		name='like post'
 	),
+	path(
+		'all_posts/', 
+		views.getAllModPosts.as_view(), 
+		name='all post'
+	),
 ]

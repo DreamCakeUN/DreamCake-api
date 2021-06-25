@@ -58,6 +58,12 @@ class getAllPosts(generics.ListAPIView):
         count = self.kwargs.get("count")
         return Post.objects.filter(status = True).order_by(atr)[:count]
 
+
+class getAllModPosts(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = serializers.PostSerializer
+    permission_classes = [ModeratorAuthenticationPermission]
+
 class getAllCom(generics.ListAPIView):
     queryset = Comentario.objects.all()
     serializer_class =serializers.ComSerializer
