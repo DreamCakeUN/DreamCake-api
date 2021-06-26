@@ -167,41 +167,19 @@ class ModificarPastel(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class AceptarPedido(generics.RetrieveUpdateAPIView):
+class AceptarPedido(generics.UpdateAPIView):
     queryset = Pedido.objects.all()
     lookup_field = 'pk'
 
     serializer_class = AceptarPedido
-    permission_classes = [IsAuthenticated]
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    permission_classes = [AdminAuthenticationPermission]
 
 class EstadoPedido(generics.RetrieveUpdateAPIView):
     queryset = Pedido.objects.all()
     lookup_field = 'pk'
 
     serializer_class = EstadoPedido
-    permission_classes = [IsAuthenticated]
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(request.user, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    permission_classes = [AdminAuthenticationPermission]
 
 class GetCake(generics.ListAPIView):
     queryset = Pastel.objects.all()
@@ -211,6 +189,16 @@ class GetCake(generics.ListAPIView):
 
     def get_queryset(self):
         return Pastel.objects.filter(usuarios = self.request.user)
+
+class GetUserPedidos(generics.ListAPIView):
+    queryset = Pedido.objects.all()
+    
+    serializer_class = PedidoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Pedido.objects.filter(user = self.request.user)
+
 
 class GetUserCake(generics.ListAPIView):
     queryset = Pastel.objects.all()
@@ -224,7 +212,6 @@ class GetUserCake(generics.ListAPIView):
         useremail = self.kwargs.get(self.lookup_url_kwarg)
         user = User.objects.get(email = useremail)
         return Pastel.objects.filter(usuarios = user)
-
 
 class ListPedidos(generics.ListAPIView):
     queryset = Pedido.objects.all()

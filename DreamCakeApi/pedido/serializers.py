@@ -117,11 +117,11 @@ class AceptarPedido(serializers.ModelSerializer):
         model = Pedido
         fields = ('aceptado',)
 
-    def update(self, instance, validated_data):
-        estado = validated_data.pop('aceptado', None)
-        instance.status = (estado is not None) is True
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     # estado = validated_data.pop('aceptado', None)
+    #     instance.aceptado = validated_data['aceptado']
+    #     instance.save()
+    #     return instance
 
 
 class EstadoPedido(serializers.ModelSerializer):

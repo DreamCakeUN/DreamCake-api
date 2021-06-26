@@ -37,6 +37,7 @@ urlpatterns = [
     path('photos/', banner_views.photoViewList),
     path('social/', include('social.urls')),
     path('pasteles/', pedido_views.GetCake.as_view(), name='Pasteles del usuerio actual'),
+    path('pedidos/', pedido_views.GetUserPedidos.as_view(), name='Pedidos del usuerio actual'),
     path('pasteles/<user_email>/', pedido_views.GetUserCake.as_view(), name='pasteles del usuario con email'),
     path('pedidos/<user_email>/', pedido_views.ListPedidos.as_view(), name='pedidos usuario'),
     path('crear_pedido/', pedido_views.CrearPedido.as_view(), name='Crear Pedido'),
