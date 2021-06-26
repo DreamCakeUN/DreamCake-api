@@ -9,4 +9,5 @@ django-rest-auth
 django-allauth
 django-extensions
 django-cors-headers
-
+django-rest-live
+channels == 2.4.0

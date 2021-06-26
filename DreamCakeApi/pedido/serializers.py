@@ -100,8 +100,8 @@ class PedidoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        for (key, value) in validated_data.items():
-            print(key, value)
+        validated_data['estado'] = 0
+        validated_data['costo'] = validated_data['pasteles'].costo + (0 if not validated_data['domiciliario'] else 5000)
         return Pedido.objects.create(**validated_data)
 
     # def update(self, instance, validated_data):
