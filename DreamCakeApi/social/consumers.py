@@ -10,11 +10,13 @@ from social import serializers as social_serializers
 
 from asgiref.sync import sync_to_async
 
+from channels.db import database_sync_to_async
+
 from djangochannelsrestframework import permissions
 from djangochannelsrestframework.observer import model_observer
 from djangochannelsrestframework.decorators import action
 
-from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
+from djangochannelsrestframework.generics import GenericAsyncAPIConsumer, AsyncAPIConsumer
 from djangochannelsrestframework.mixins import (
     ListModelMixin,
     RetrieveModelMixin,
@@ -43,7 +45,7 @@ class AdminAuthenticationPermission(permissions.BasePermission):
 
             session_data = (await session).get_decoded()
             uid = await sync_to_async(session_data.get)('_auth_user_id')
-            user = await sync_to_async(User.objects.get)(id=uid)
+            user = await database_sync_to_async(User.objects.get)(id=uid)
 
             return user.is_superuser
 
@@ -51,21 +53,21 @@ class AdminAuthenticationPermission(permissions.BasePermission):
 
 
 class AuthenticationPermission(permissions.BasePermission):
-    async def has_permission(self, scope, consumer, action):
+    async def has_permission(self, scope, consumer, user_pk, action):
         cookies = scope.get("cookies")
 
         if 'sessionid' in cookies.keys():
-            sessionid = cookies['sessionid']
+            # sessionid = cookies['sessionid']
             
-            session = sync_to_async(Session.objects.get)(session_key=sessionid)
+            # session = sync_to_async(Session.objects.get)(session_key=sessionid)
 
-            session_data = (await session).get_decoded()
-            uid = await sync_to_async(session_data.get)('_auth_user_id')
-            user = await sync_to_async(User.objects.get)(id=uid)
+            # session_data = (await session).get_decoded()
+            # uid = await sync_to_async(session_data.get)('_auth_user_id')
+            user = await database_sync_to_async(User.objects.get)(email=user_pk)
 
             return user.is_active
 
-        return False
+        return True
 
 class PedidoConsumer(GenericAsyncAPIConsumer,):
     queryset = Pedido.objects.all()
@@ -108,22 +110,50 @@ class PedidoUserConsumer(GenericAsyncAPIConsumer,):
     permission_classes = (AuthenticationPermission,)
 
     @model_observer(Pedido)
-    async def pedido_activity(self, message: pedido_serializers.PedidoSerializer, observer=None, **kwargs):
+    async def pedido_user_activity(self, message: pedido_serializers.PedidoSerializer, observer=None, **kwargs):
         await self.send_json(message.data)
 
-    @pedido_activity.serializer
-    def pedido_activity(self, instance: Pedido, action, **kwargs) -> pedido_serializers.PedidoSerializer:
+    @pedido_user_activity.serializer
+    def pedido_user_activity(self, instance: Pedido, action, **kwargs) -> pedido_serializers.PedidoSerializer:
         return pedido_serializers.PedidoSerializer(instance)
 
+    @pedido_user_activity.groups_for_signal
+    def pedido_user_activity(self, instance: Pedido, **kwargs):
+        yield f'-user__{instance.user}' 
+
+    @pedido_user_activity.groups_for_consumer
+    def pedido_user_activity(self, user=None, **kwargs):
+        yield f'-user__{user.email}'
+
     @action()
-    async def subscribe_to_pedido_activity(self, **kwargs):
-        cookies = self.scope.get("cookies")
+    async def subscribe_to_pedido_user_activity(self, user_pk, **kwargs):
+        user = await database_sync_to_async(User.objects.get)(email=user_pk)
+        await self.pedido_user_activity.subscribe(user = user)
 
-        sessionid = cookies['sessionid'] 
-        session = sync_to_async(Session.objects.get)(session_key=sessionid)
+# class PedidoConsumer1(GenericAsyncAPIConsumer,):
 
-        session_data = (await session).get_decoded()
-        uid = await sync_to_async(session_data.get)('_auth_user_id')
-        user = await sync_to_async(User.objects.get)(id=uid)
+#     queryset = Pedido.objects.all()
+#     serializer_class = pedido_serializers.PedidoSerializer
+#     permission_classes = (AuthenticationPermission,)
 
-        await self.pedido_activity.subscribe(user=user)
+#     @model_observer(Pedido)
+#     async def pedido_activity(self, message: pedido_serializers.PedidoSerializer, observer=None, **kwargs):
+#         await self.send_json(message.data)
+
+#     @pedido_activity.serializer
+#     def pedido_activity(self, instance: Pedido, action, **kwargs) -> pedido_serializers.PedidoSerializer:
+#         return pedido_serializers.PedidoSerializer(instance)
+
+#     @action()
+#     async def subscribe_to_pedido_user_activity(self, **kwargs):
+#         cookies = self.scope.get("cookies")
+#         sessionid = cookies['sessionid']
+            
+#         session = sync_to_async(Session.objects.get)(session_key=sessionid)
+
+#         session_data = (await session).get_decoded()
+#         uid = await sync_to_async(session_data.get)('_auth_user_id')
+#         user = await sync_to_async(User.objects.get)(id=uid)
+        
+#         await self.pedido_activity.subscribe(user = user)
+#         # await self.pedido_activity.subscribe()
