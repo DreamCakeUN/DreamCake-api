@@ -100,3 +100,30 @@ class PostConsumer(GenericAsyncAPIConsumer,):
     @action()
     async def subscribe_to_post_activity(self, **kwargs):
         await self.post_activity.subscribe()
+
+
+class PedidoUserConsumer(GenericAsyncAPIConsumer,):
+    queryset = Pedido.objects.all()
+    serializer_class = pedido_serializers.PedidoSerializer
+    permission_classes = (AuthenticationPermission,)
+
+    @model_observer(Pedido)
+    async def pedido_activity(self, message: pedido_serializers.PedidoSerializer, observer=None, **kwargs):
+        await self.send_json(message.data)
+
+    @pedido_activity.serializer
+    def pedido_activity(self, instance: Pedido, action, **kwargs) -> pedido_serializers.PedidoSerializer:
+        return pedido_serializers.PedidoSerializer(instance)
+
+    @action()
+    async def subscribe_to_pedido_activity(self, **kwargs):
+        cookies = self.scope.get("cookies")
+
+        sessionid = cookies['sessionid'] 
+        session = sync_to_async(Session.objects.get)(session_key=sessionid)
+
+        session_data = (await session).get_decoded()
+        uid = await sync_to_async(session_data.get)('_auth_user_id')
+        user = await sync_to_async(User.objects.get)(id=uid)
+
+        await self.pedido_activity.subscribe(user=user)
