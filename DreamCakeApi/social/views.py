@@ -106,35 +106,12 @@ class ModerateCom(generics.RetrieveUpdateAPIView):
 
     lookup_url_kwarg = 'pk'
     queryset = Comentario.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object(), data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
 class ModeratePost(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission)
     serializer_class = serializers.ModPost
 
     lookup_url_kwarg = 'pk'
     queryset = Post.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object(), data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 class LikePost(generics.RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     lookup_url_kwarg = 'pk'

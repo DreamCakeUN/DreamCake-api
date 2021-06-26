@@ -42,23 +42,11 @@ class ModCom(serializers.ModelSerializer):
         model = Comentario
         fields = ('status',)
 
-    def update(self, instance, validated_data):
-        status = validated_data.pop('status', None)
-        instance.status = False if status is None else status
-        instance.save()
-        return instance
-
 class ModPost(serializers.ModelSerializer):
     status = serializers.BooleanField()
     class Meta:
         model = Post
         fields = ('status',)
-
-    def update(self, instance, validated_data):
-        status = validated_data.pop('status', None)
-        instance.status = False if status is None else status
-        instance.save()
-        return instance
 
 class LikePost(serializers.ModelSerializer):
 
