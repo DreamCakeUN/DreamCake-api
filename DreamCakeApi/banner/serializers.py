@@ -4,5 +4,10 @@ from .models import Banner
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner    
-        fields = ['title','text','abstract','publication_date','image']
+        fields = '__all__'
+
+    def create(self, validated_data):
+        validated_data["status"] = True
+        instance = super().create(validated_data)
+        return instance
         

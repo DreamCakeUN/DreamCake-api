@@ -20,7 +20,6 @@ from django.urls import path
 #from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from banner.views import photoViewList
 from django.conf.urls import include
 from social import views as social_views
 from banner import views as banner_views
@@ -34,7 +33,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('stats/', include('statistics_api.urls')),
     path('users/', include('users.urls')),
-    path('photos/', banner_views.photoViewList),
     path('social/', include('social.urls')),
     path('pasteles/', pedido_views.GetCake.as_view(), name='Pasteles del usuerio actual'),
     path('pedidos/', pedido_views.GetUserPedidos.as_view(), name='Pedidos del usuerio actual'),
@@ -52,4 +50,7 @@ urlpatterns = [
     path('all_pedidos/<atr>/', pedido_views.AllPedidos.as_view(), name='todos los pedidos'),
     path('pedido_by_status/<int:status>/<atr>/', pedido_views.PedidosByStatus.as_view(), name='pedidos con status'),
     path('pedido_by_accept/<int:acp>/<atr>/', pedido_views.PedidosByAccept.as_view(), name='Estado pedidos con accpt'),
+    path('banner/get_all/', banner_views.GetAllBanners.as_view(), name='get all banners'),
+    path('banner/create/', banner_views.CreateBanner.as_view(), name='create babber'),
+    path('banner/delete/<int:pk>', banner_views.EditStatusBanner.as_view(), name='update banner')
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
