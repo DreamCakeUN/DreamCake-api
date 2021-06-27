@@ -11,3 +11,8 @@ class BannerSerializer(serializers.ModelSerializer):
         instance = super().create(validated_data)
         return instance
         
+class BannerSerializerEdit(serializers.ModelSerializer):
+    class Meta:
+        model = Banner    
+        fields = ['status']
+        

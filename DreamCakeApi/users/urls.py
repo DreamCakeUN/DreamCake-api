@@ -67,17 +67,17 @@ api_urlpatterns = [
         name='social_account_disconnect',
     ),
     path(
-        'auth/user/disable',
+        'auth/user/disable/',
         views.DisableAccount.as_view(),
         name='disable_account'
     ),
     path(
-        'auth/user/admin/<pk>',
+        'auth/user/admin/<pk>/',
         views.AdminEditUser.as_view(),
         name='Admin user edit'
     ),
     path(
-        'auth/user/mod/<pk>',
+        'auth/user/mod/<pk>/',
         views.ModEditUser.as_view(),
         name='Admin user edit'
     ),
@@ -85,6 +85,11 @@ api_urlpatterns = [
         'auth/user/getid/<email>',
         views.getID.as_view(),
         name='get user id'
+    ),
+    path(
+        'auth/all_users/',
+        views.AllUsers.as_view(),
+        name='get all users'
     ),
 
 

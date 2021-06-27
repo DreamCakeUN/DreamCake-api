@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from banner.models import Banner
 from django.http import HttpResponse, JsonResponse
-from .serializers import BannerSerializer
+from .serializers import BannerSerializer, BannerSerializerEdit
 
 from rest_framework import generics
 from rest_framework import permissions
@@ -36,6 +36,6 @@ class CreateBanner(generics.CreateAPIView):
 
 class EditStatusBanner(generics.UpdateAPIView):
     queryset = Banner.objects.all()
-    serializer_class = BannerSerializer
+    serializer_class = BannerSerializerEdit
     permission_classes = [AdminAuthenticationPermission]
     lookup_url_kwarg = 'pk'

@@ -52,5 +52,5 @@ urlpatterns = [
     path('pedido_by_accept/<int:acp>/<atr>/', pedido_views.PedidosByAccept.as_view(), name='Estado pedidos con accpt'),
     path('banner/get_all/', banner_views.GetAllBanners.as_view(), name='get all banners'),
     path('banner/create/', banner_views.CreateBanner.as_view(), name='create babber'),
-    path('banner/delete/<int:pk>', banner_views.EditStatusBanner.as_view(), name='update banner')
+    path('banner/delete/<int:pk>/', banner_views.EditStatusBanner.as_view(), name='update banner')
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

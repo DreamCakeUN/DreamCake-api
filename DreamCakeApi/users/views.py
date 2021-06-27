@@ -177,17 +177,6 @@ class AdminEditUser(generics.RetrieveUpdateAPIView):
     serializer_class = AdminUserSerializer
     permission_classes = [IsAuthenticated, AdminAuthenticationPermission]
 
-    def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object())
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.get_object(), data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class ModEditUser(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
@@ -217,4 +206,8 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
-
+class AllUsers(generics.ListAPIView):
+    model = User
+    permission_classes = [AdminAuthenticationPermission]
+    serializer_class = AdminUserSerializer
+    queryset = User.objects.all()
