@@ -141,7 +141,7 @@ class EstadoPedido(serializers.ModelSerializer):
         fields = ('estado',)
 
 
-class EditarPedido(serializers.ModelSerializer):
+class EditarPedidoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pedido
@@ -156,5 +156,5 @@ class EditarPedido(serializers.ModelSerializer):
 
         if(instance.aceptado):
             raise serializers.ValidationError("El pedido ya fue aceptado")
-            
+
         return super().update(instance, validated_data)

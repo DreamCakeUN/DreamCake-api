@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from pedido.models import Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
-from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido, AddUserToPaselSerializer, EditarPastelSerializer
+from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido, AddUserToPaselSerializer, EditarPastelSerializer, EditarPedidoSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -261,6 +261,6 @@ class PedidosByAccept(generics.ListAPIView):
 
 class EditarPedido(generics.UpdateAPIView):
     queryset = Pedido.objects.all()
-    serializer_class = EditarPedido
+    serializer_class = EditarPedidoSerializer
     lookup_url_kwarg = "pk"
     permission_classes = [permissions.IsAuthenticated]
