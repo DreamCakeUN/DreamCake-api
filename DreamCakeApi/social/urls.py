@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 	path(
-        'all_posts/<atr>/<int:count>',
+        'all_posts/<atr>/<int:count>/',
         views.getAllPosts.as_view(),
         name='get all posts'
     ),
@@ -18,22 +18,22 @@ urlpatterns = [
         name='crear comentario'
     ),
 	path(
-		'comments/<int:post>',
+		'comments/<int:post>/',
 		views.getAllCom.as_view(),
 		name='comentarios del post'
 	),
 	path(
-		'mod_com/<int:pk>',
+		'mod_com/<int:pk>/',
 		views.ModerateCom.as_view(),
 		name='moderar post'
 	),
 	path(
-		'mod_post/<int:pk>',
+		'mod_post/<int:pk>/',
 		views.ModeratePost.as_view(),
 		name='moderar comentario'
 	),
 	path(
-		'post_cake/<int:post>',
+		'post_cake/<int:post>/',
 		views.getPostCake.as_view(),
 		name='get cake from post'
 	),
@@ -47,4 +47,9 @@ urlpatterns = [
 		views.getAllModPosts.as_view(), 
 		name='all post'
 	),
+	path(
+		'all_coms/<int:post>/', 
+		views.getAllModCom.as_view(), 
+		name='all mod com'
+	)
 ]

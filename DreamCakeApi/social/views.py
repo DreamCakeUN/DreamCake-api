@@ -64,6 +64,16 @@ class getAllModPosts(generics.ListAPIView):
     serializer_class = serializers.PostSerializer
     permission_classes = [ModeratorAuthenticationPermission]
 
+class getAllModCom(generics.ListAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = serializers.ComSerializer
+    lookup_url_kwarg = 'post'
+    permission_classes = [ModeratorAuthenticationPermission]
+
+    def get_queryset(self):
+        post = self.kwargs.get(self.lookup_url_kwarg)
+        return Comentario.objects.filter(post = post)
+
 class getAllCom(generics.ListAPIView):
     queryset = Comentario.objects.all()
     serializer_class =serializers.ComSerializer
