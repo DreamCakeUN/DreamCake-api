@@ -258,3 +258,9 @@ class PedidosByAccept(generics.ListAPIView):
         acp = self.kwargs.get(self.lookup_url_kwarg)
         atr = self.kwargs.get("atr")
         return Pedido.objects.filter(aceptado = acp).order_by(atr)
+
+class EditarPedido(generics.UpdateAPIView):
+    queryset = Pedido.objects.all()
+    serializer_class = EditarPedido
+    lookup_url_kwarg = "pk"
+    permission_classes = [permissions.IsAuthenticated]

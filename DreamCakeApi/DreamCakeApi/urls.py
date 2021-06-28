@@ -44,7 +44,8 @@ urlpatterns = [
     path('delpedido/<int:id_pedido>/', pedido_views.eliminar_pedido),
     path('modificar_pastel/<int:pk>/', pedido_views.ModificarPastel.as_view(), name='Modificar Pastel'),
     path('guardar_pastel/<int:pk>/', pedido_views.CopiarPasel.as_view(), name='Copiar Pastel'),
-    path('copiar_pastel/<int:pk>/', pedido_views.EditarPastel.as_view(), name='Copiar Pastel'),
+    path('copiar_pastel/<int:pk>/', pedido_views.EditarPastel.as_view(), name='Copiar y editar Pastel'),
+    path('editar_pedido/<int:pk>/', pedido_views.EditarPedido.as_view(), name='Editar Pedido'),
     path('aceptar_pedido/<int:pk>/', pedido_views.AceptarPedido.as_view(), name='Aceptar Pedido'),
     path('estado_pedido/<int:pk>/', pedido_views.EstadoPedido.as_view(), name='Estado Pedido'),
     path('all_pedidos/<atr>/', pedido_views.AllPedidos.as_view(), name='todos los pedidos'),
@@ -54,3 +55,4 @@ urlpatterns = [
     path('banner/create/', banner_views.CreateBanner.as_view(), name='create babber'),
     path('banner/delete/<int:pk>/', banner_views.EditStatusBanner.as_view(), name='update banner')
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
