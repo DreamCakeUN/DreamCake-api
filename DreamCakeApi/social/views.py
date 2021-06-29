@@ -111,13 +111,13 @@ class createCom(generics.CreateAPIView):
         return response
 
 class ModerateCom(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission)
+    permission_classes = (permissions.IsAuthenticated, ModeratorAuthenticationPermission)
     serializer_class = serializers.ModCom
 
     lookup_url_kwarg = 'pk'
     queryset = Comentario.objects.all()
 class ModeratePost(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated, AdminAuthenticationPermission or ModeratorAuthenticationPermission)
+    permission_classes = (permissions.IsAuthenticated, ModeratorAuthenticationPermission)
     serializer_class = serializers.ModPost
 
     lookup_url_kwarg = 'pk'
