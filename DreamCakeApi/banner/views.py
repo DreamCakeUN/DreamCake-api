@@ -27,7 +27,7 @@ class AdminAuthenticationPermission(permissions.BasePermission):
 class GetAllBanners(generics.ListAPIView):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class CreateBanner(generics.CreateAPIView):
     queryset = Banner.objects.all()

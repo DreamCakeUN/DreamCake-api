@@ -63,6 +63,12 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('email', 'last_login', 'is_superuser', 'is_staff', 'is_active', "pasteles")
 
+    def update(self, instance, validated_data):
+        user = self.context.get('request', None).user
+        validated_data['full_name'] = user.full_name if validated_data['full_name'] is None else validated_data['full_name']
+        validated_data['foto'] = user.foto if validated_data['foto'] is None else validated_data['foto']
+        return super().update(instance, validated_data)
+
 
 class AdminUserSerializer(serializers.ModelSerializer):
      class Meta:
