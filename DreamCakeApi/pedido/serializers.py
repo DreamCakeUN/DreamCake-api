@@ -82,20 +82,6 @@ class EditarPastelSerializer(serializers.ModelSerializer):
         model = Pastel
         fields = '__all__'
 
-    def create(self, validated_data):
-        prev = self.context['prev'].__dict__
-        mod = False
-
-        for k in validated_data.keys():
-            mod = validated_data[k] is not prev[k] if not mod else False
-
-        if not mod:
-            raise serializers.ValidationError({"detail": "No se modifico"})
-
-        instance = super().create(validated_data)
-        instance.usuarios.add(self.context['request'].user.id)
-        return instance
-
 
 class PedidoSerializer(serializers.ModelSerializer):
     fecha_pedido = serializers.DateTimeField(
