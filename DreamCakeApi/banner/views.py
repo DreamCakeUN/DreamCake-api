@@ -29,6 +29,10 @@ class GetAllBanners(generics.ListAPIView):
     serializer_class = BannerSerializer
     permission_classes = [permissions.AllowAny]
 
+    def get_queryset(self):
+        post = self.kwargs.get(self.lookup_url_kwarg)
+        return Banner.objects.filter(status = True)
+
 class CreateBanner(generics.CreateAPIView):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
