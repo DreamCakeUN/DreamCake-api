@@ -158,3 +158,21 @@ class EditarPedidoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("El pedido ya fue aceptado")
 
         return super().update(instance, validated_data)
+
+
+class CancelarPedidoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pedido
+        fields = ['estado']
+        read_only_fields = ['estado']
+
+    def update(self, instance, validated_data):
+        if(instance.user.email != self.context.get('request', None).user.email):
+            raise serializers.ValidationError("No puede cancelar este pedido")
+
+        if(instance.aceptado):
+            raise serializers.ValidationError("El pedido ya fue aceptado")
+
+        validated_data['estado'] = 3
+        return super().update(instance, validated_data)

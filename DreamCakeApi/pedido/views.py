@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from pedido.models import Pastel, Pedido
 from django.http import HttpResponse, JsonResponse
-from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido, AddUserToPaselSerializer, EditarPastelSerializer, EditarPedidoSerializer
+from .serializers import PastelSerializer, PedidoSerializer, AceptarPedido, EstadoPedido, AddUserToPaselSerializer, EditarPastelSerializer, EditarPedidoSerializer, CancelarPedidoSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -139,15 +139,17 @@ def mod_pedido_put(request, id_pedido):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
-def eliminar_pedido(request, id_pedido):
-    try:
-        pedido = Pedido.objects.get(id = id_pedido)
-    except Pedido.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'PUT':#?????
-        pedido.status = 3
-        pedido.save()
-        return HttpResponse(request)
+class GetPastelFromPedido(generics.RetrieveAPIView):
+    queryset = Pastel.objects.all()
+    lookup_field = 'pk'
+
+    serializer_class = PastelSerializer
+    permission_classes = [IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        pedido = self.kwargs.get(self.lookup_field)
+        serializer = self.serializer_class(Pedido.objects.get(idpedido = pedido).pasteles)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ModificarPastel(generics.RetrieveUpdateAPIView):
     queryset = Pastel.objects.all()
@@ -262,5 +264,12 @@ class PedidosByAccept(generics.ListAPIView):
 class EditarPedido(generics.UpdateAPIView):
     queryset = Pedido.objects.all()
     serializer_class = EditarPedidoSerializer
+    lookup_url_kwarg = "pk"
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class CancelarPedido(generics.UpdateAPIView):
+    queryset = Pedido.objects.all()
+    serializer_class = CancelarPedidoSerializer
     lookup_url_kwarg = "pk"
     permission_classes = [permissions.IsAuthenticated]
